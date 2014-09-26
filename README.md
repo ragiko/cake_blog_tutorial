@@ -2,3 +2,10 @@
 
 * ブログチュートリアル: http://book.cakephp.org/2.0/ja/tutorials-and-examples/blog/blog.html
 * composerからcakeをinstall: http://book.cakephp.org/2.0/ja/installation/advanced-installation.html
+
+### set up
+composerでcakephpをinstall
+```
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+```
