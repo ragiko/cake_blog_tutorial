@@ -6,3 +6,6 @@ composer.phar
 !empty
 Plugin/*
 webroot/*
+.dbup/properties.ini
+.dbup/applied/*
+dbup.phar
