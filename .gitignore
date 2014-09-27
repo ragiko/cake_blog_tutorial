@@ -4,3 +4,5 @@ tmp/*
 Vendor
 composer.phar
 !empty
+Plugin/*
+webroot/*
