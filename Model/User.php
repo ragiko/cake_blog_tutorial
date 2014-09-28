@@ -4,10 +4,16 @@ App::uses('AppModel', 'Model');
 
 class User extends AppModel {
     public $validate = array(
-        'title' => array(
+        'name' => array(
             'rule' => 'notEmpty'
         ),
-        'body' => array(
+        'age' => array(
+            'rule' => 'notEmpty'
+        ),
+        'gender' => array(
+            'rule' => 'notEmpty'
+        ),
+        'phone_number' => array(
             'rule' => 'notEmpty'
         )
     );

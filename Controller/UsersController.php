@@ -26,7 +26,7 @@ class UsersController extends AppController {
             print_r($this->request->data);
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('Your user has been saved.'));
-                return $this->redirect(array('action' => 'regist'));
+                return $this->redirect(array('action' => 'top'));
             }
             $this->Session->setFlash(__('Unable to add your user.'));
         }
@@ -46,7 +46,7 @@ class UsersController extends AppController {
             $this->User->id = $id;
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('Your user has been updated.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'top'));
             }
             $this->Session->setFlash(__('Unable to update your user.'));
         }
