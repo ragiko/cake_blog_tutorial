@@ -10,17 +10,16 @@ curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 ```
 
-* dbの設定
+### dbの設定
+* config/database.phpと.dbup/propaties.iniを変更
+
 ```
-CREATE  TABLE IF NOT EXISTS `posts` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `title` VARCHAR(50),
-  `body` text,
-  `created_at` DATETIME,
-  `updated_at` DATETIME,
-  `photo` varchar(255),
-  `photo_dir` varchar(255),
-  PRIMARY KEY (`id`)
-)
-ENGINE = InnoDB;
+curl -SslO https://raw.githubusercontent.com/brtriver/dbup/master/dbup.phar
+php dbup.phar up
 ```
+
+### ディレクトリの追加
+mkdir .dbup/applied
+mkdir tmp
+chmod 777 tmp
+chmod 777 webroot 
