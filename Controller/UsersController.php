@@ -3,9 +3,18 @@
 class UsersController extends AppController {
     public $helpers = array('Html', 'Form');
 
-    public function top() {
-        // TODO 自分以外の女性ユーザ出力
-        $this->set('users', $this->User->find('all'));
+    public function top($id) {
+        $this->set('users', 
+            $this->User->find('all',
+                array(
+                    'conditions' => array(
+                        'NOT' => array(
+                            'User.id' => array($id)
+                        )
+                    )
+                )
+            )
+        );
     }
 
     public function view($id) {
@@ -26,7 +35,7 @@ class UsersController extends AppController {
             print_r($this->request->data);
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('Your user has been saved.'));
-                return $this->redirect(array('action' => 'top'));
+                return $this->redirect(array('action' => 'top/1'));
             }
             $this->Session->setFlash(__('Unable to add your user.'));
         }
@@ -46,7 +55,7 @@ class UsersController extends AppController {
             $this->User->id = $id;
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('Your user has been updated.'));
-                return $this->redirect(array('action' => 'top'));
+                return $this->redirect(array('action' => 'top/1'));
             }
             $this->Session->setFlash(__('Unable to update your user.'));
         }
