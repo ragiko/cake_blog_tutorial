@@ -2,7 +2,7 @@
 
 <?php echo $this->Html->link(
     'login',
-    array('controller' => 'pages', 'action' => 'top')
+    array('controller' => 'pages', 'action' => 'login')
 ); ?>
 
 <?php echo $this->Html->link(

@@ -30,6 +30,7 @@
         <td>
             <?php echo $this->Html->link('Edit', array('action' => 'edit', $user['User']['id'])); ?>
         </td>
+        <td><img src="<?php echo  DS  . "files/user/photo/" . $user['User']['id'] . DS . $user['User']['photo']?>" alt=""></td>
         <td><?php echo $user['User']['created']; ?></td>
         <td></td>
     </tr>
