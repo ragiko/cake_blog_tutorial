@@ -1,10 +1,15 @@
-tmp/*
 [Cc]onfig/database.php
+tmp/*
+
 Vendor
 composer.phar
+
 !empty
+
 Plugin/*
-webroot/*
+
+webroot/files/*
+
 .dbup/properties.ini
 .dbup/applied/*
 dbup.phar
