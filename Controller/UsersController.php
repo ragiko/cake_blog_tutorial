@@ -20,17 +20,17 @@ class UsersController extends AppController {
         $this->set('user', $user);
     }
 
-    // public function add() {
-    //     if ($this->request->is('post')) {
-    //         $this->User->create();
-    //         print_r($this->request->data);
-    //         if ($this->User->save($this->request->data)) {
-    //             $this->Session->setFlash(__('Your user has been saved.'));
-    //             return $this->redirect(array('action' => 'regist'));
-    //         }
-    //         $this->Session->setFlash(__('Unable to add your user.'));
-    //     }
-    // }
+    public function add() {
+        if ($this->request->is('post')) {
+            $this->User->create();
+            print_r($this->request->data);
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash(__('Your user has been saved.'));
+                return $this->redirect(array('action' => 'regist'));
+            }
+            $this->Session->setFlash(__('Unable to add your user.'));
+        }
+    }
 
     public function edit($id = null) {
         if (!$id) {

@@ -14,6 +14,7 @@
         <th>age</th>
         <th>gender</th>
         <th>address</th>
+        <th>action</th>
         <th>photo</th>
         <th>Created</th>
     </tr>
@@ -30,11 +31,18 @@
         <td>
             <?php echo $this->Html->link('Edit', array('action' => 'edit', $user['User']['id'])); ?>
         </td>
-        <td><img src="<?php echo  DS  . "files/user/photo/" . $user['User']['id'] . DS . $user['User']['photo']?>" alt=""></td>
+        <td><img src="<?php echo  DS  . "files/user/photo/" . $user['User']['id'] . DS . "thumb150_".$user['User']['photo']?>" alt=""></td>
         <td><?php echo $user['User']['created']; ?></td>
         <td></td>
     </tr>
     <?php endforeach; ?>
     <?php unset($user); ?>
 </table>
+
+
+<p>test用</p>
+<?php echo $this->Html->link(
+    'Add User',
+    array('controller' => 'users', 'action' => 'add')
+); ?>
 

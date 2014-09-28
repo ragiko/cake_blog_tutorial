@@ -12,13 +12,20 @@ class User extends AppModel {
         )
     );
 
-    public $actsAs = array(
-        'Upload.Upload' => array(
-            'photo' => array(
-                'fields' => array(
+    public $actsAs = [
+        'Upload.Upload' => [
+            'photo' => [
+                'fields' => [
                     'dir' => 'photo_dir'
-                )
-            )
-        )
-    );
+                ],
+                'thumbnailSizes' => [
+                    'thumb150' => '150x150',
+                    'normal' => '200x200',
+                    'big' => '500x500'
+                ],
+                'path' => '{ROOT}webroot{DS}files{DS}{model}{DS}{field}{DS}',
+                'thumbnailMethod' => 'php'
+            ]
+        ]
+    ];
 }
