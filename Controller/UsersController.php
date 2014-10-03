@@ -25,13 +25,36 @@ class UsersController extends AppController {
         $this->autoRender = false;
 
         $response = new Services_Twilio_Twiml();
-        $gather = $response->gather(array('numDigits' => 10, 'finishOnKey' => '#', 'timeout' => 20));
-        $gather->say("サンプル宅配サービス自動受付センターです。お手持ちのご不在連絡票に記載されている10桁のお問い合わせ番号を入力し、最後にシャープを押してください。", array('language' => 'ja-jp'));
-        $response->say("20秒ボタンが押されませんでしたので、終了します。", array('language' => 'ja-jp'));
+        $response->say("初め", array('language' => 'ja-jp'));
+        $record = $response->record(array( "action" => "recording-goodbye.php", 'method' => "GET", 'finishOnKey' => '#', 'maxLength' => 20));
+        $response->say("レコード失敗", array('language' => 'ja-jp'));
 
         $this->response->type('text/xml');
         $this->response->body($response);
         return $this->response;
+    }
+
+    // twimlから帰ってきてデータをDBに入れる
+    public function twiedit($id = null) {
+        $this->autoRender = false;
+
+        if (!$id) {
+            throw new NotFoundException(__('Invalid id'));
+        }
+
+        $user = $this->User->findById($id);
+        if (!$user) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+
+        // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
+        // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
+        // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
+        if ($this->request->is('post')) {
+            $data = array('age' => 26);
+            $this->User->id = $id;
+            $this->User->save($data);
+        }
     }
 
     public function view($id) {
