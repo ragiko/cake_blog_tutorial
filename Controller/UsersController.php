@@ -2,7 +2,7 @@
 
 App::uses('AppController', 'Controller');
  
-App::import('Vendor', '/Twilio/Services/Twilio');
+App::import('Vendor', 'twilio/sdk/Services/Twilio');
 
 class UsersController extends AppController {
     public $helpers = array('Html', 'Form');
