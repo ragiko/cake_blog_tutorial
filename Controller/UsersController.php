@@ -26,7 +26,7 @@ class UsersController extends AppController {
 
         $response = new Services_Twilio_Twiml();
         $response->say("初め", array('language' => 'ja-jp'));
-        $record = $response->record(array( "action" => "http://153.121.51.112/cake_blog_tutorial/users/twiedit/1", 'method' => "GET", 'finishOnKey' => '#', 'maxLength' => 20));
+        $record = $response->record(array( "action" => "http://153.121.51.112/cake_blog_tutorial/users/twiedit/1", 'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 20));
         $response->say("レコード失敗", array('language' => 'ja-jp'));
 
         $this->response->type('text/xml');
@@ -47,13 +47,17 @@ class UsersController extends AppController {
             throw new NotFoundException(__('Invalid user'));
         }
 
+        // twilioからmessage のpathを取得
+        $message_path = $_REQUEST['RecordingUrl'];
+        if (!$message_path) {
+            throw new NotFoundException(__('Invalid message'));
+        }
+
         // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
         // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
         // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
         if ($this->request->is('post')) {
-            $voice_url = $_REQUEST['RecordingUrl'];
-            $data = array('address' => $voice_url);
-
+            $data = array('message_path' => $message_path);
             $this->User->id = $id;
             $this->User->save($data);
         }
