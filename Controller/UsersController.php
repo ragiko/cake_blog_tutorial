@@ -47,6 +47,7 @@ class UsersController extends AppController {
         return $this->response;
     }
 
+
     // twimlから帰ってきてデータをDBに入れる
     public function twiedit($id = null) {
         $this->autoRender = false;
@@ -76,6 +77,35 @@ class UsersController extends AppController {
         }
     }
 
+    // ブラウザフォンのテスト
+    public function phone() {
+        // アカウント設定
+        $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
+        $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
+
+        $capability = new Services_Twilio_Capability($accountSid, $authToken);
+        $capability->allowClientOutgoing('PN00cdf931452a284c6b400440a93a7ba0');
+        // APbcda1076e3aad2873a64f6549f6af1f6
+        $capability->allowClientIncoming("takeda");
+        $token = $capability->generateToken();
+
+        $this->set('token', $token);
+    }
+
+    // ブラウザフォンのテストのためのtwilio
+    public function twiphone() {
+        $this->autoRender = false;
+
+        $response = new Services_Twilio_Twiml();
+        $response->say("Twilio Clientからのテストです", array('language' => 'ja-jp'));
+        $response->dial("your twilio client name", array('callerId' => 'your twilio tel number'));
+        $response->say("通話が終了しました", array('language' => 'ja-jp'));
+
+        $this->response->type('text/xml');
+        $this->response->body($response);
+        return $this->response;
+    }
+    
     public function view($id) {
         if (!$id) {
             throw new NotFoundException(__('Invalid user'));
