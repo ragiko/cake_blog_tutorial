@@ -25,7 +25,7 @@ class UsersController extends AppController {
         $this->autoRender = false;
 
         $response = new Services_Twilio_Twiml();
-        $gather = $response->gather(array('numDigits' => 10, 'finishOnKey' => '#', 'timeout' => 20, 'action' => 'http://各自のURL/check'));
+        $gather = $response->gather(array('numDigits' => 10, 'finishOnKey' => '#', 'timeout' => 20));
         $gather->say("サンプル宅配サービス自動受付センターです。お手持ちのご不在連絡票に記載されている10桁のお問い合わせ番号を入力し、最後にシャープを押してください。", array('language' => 'ja-jp'));
         $response->say("20秒ボタンが押されませんでしたので、終了します。", array('language' => 'ja-jp'));
 
