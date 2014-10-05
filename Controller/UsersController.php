@@ -5,9 +5,22 @@ App::uses('AppController', 'Controller');
 App::import('Vendor', 'twilio/sdk/Services/Twilio');
 
 class UsersController extends AppController {
+
+    // 別のモデルを使うときは$usesを書く
+    // http://book.cakephp.org/2.0/en/controllers.html#Controller::$uses
+    public $uses = array('Like', 'User');
+
     public $helpers = array('Html', 'Form');
 
     public function top($id) {
+
+        // ユーザが興味のあるユーザ群
+        $like_user_ids = $this->User->find_like_user_by_id($id);
+        $this->set('like_user_ids', $like_user_ids);
+
+        // マッチングを調べる
+        echo $this->Like->is_matching_users(1, 3);
+
         $this->set('users', 
             $this->User->find('all',
                 array(
@@ -110,17 +123,5 @@ class UsersController extends AppController {
             $this->request->data = $user;
         }
     }
-
-    // public function delete($id) {
-    //     if ($this->request->is('get')) {
-    //         throw new MethodNotAllowedException();
-    //     }
-
-    //     if ($this->Post->delete($id)) {
-    //         $this->Session->setFlash(__('The post with id: %s has been deleted.', h($id)));
-    //         return $this->redirect(array('action' => 'index'));
-    //     }
-    // }
-
 
 }

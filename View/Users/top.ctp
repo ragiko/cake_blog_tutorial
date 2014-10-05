@@ -17,13 +17,14 @@
         <th>action</th>
         <th>photo</th>
         <th>Created</th>
+        <th>like</th>
     </tr>
 
     <!-- ここから、$users配列をループして、投稿記事の情報を表示 -->
 
     <?php foreach ($users as $user): ?>
     <tr>
-        <td><?php echo $user['User']['id']; ?></td>
+        <td><?php echo  $user['User']['id']; ?></td>
         <td><?php echo $user['User']['name']; ?></td>
         <td><?php echo $user['User']['age']; ?></td>
         <td><?php echo $user['User']['gender']; ?></td>
@@ -33,7 +34,10 @@
         </td>
         <td><img src="<?php echo  DS  . "files/user/photo/" . $user['User']['id'] . DS . "thumb150_".$user['User']['photo']?>" alt=""></td>
         <td><?php echo $user['User']['created']; ?></td>
-        <td></td>
+        <td>
+            <button>like</button>
+            <?php echo (in_array($user['User']['id'], $like_user_ids)) ? 'is like' : ''; ?>
+        </td>
     </tr>
     <?php endforeach; ?>
     <?php unset($user); ?>
