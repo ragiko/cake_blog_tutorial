@@ -168,8 +168,12 @@ class LikesController extends AppController {
             $this->Like->save($data);
         }
     }
+
+    // // test用
+    // public function a() {
+    //     $a = $this->Like->findMessageUrlByUserIds(2, 1);
+    //     echo "<pre>";
+    //     print_r($a);
+    //     echo "</pre>";
+    // }
 }
-
-
-
-

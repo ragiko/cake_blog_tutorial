@@ -28,4 +28,17 @@ class Like extends AppModel {
        
         return ($count1 > 0 && $count2 > 0) ? true : false;
     }
+
+    public function findMessageUrlByUserIds($send_user_id, $receive_user_id) {
+        $like = $this->find('first', 
+            array('conditions' => 
+                array (
+                        'Like.send_user_id' => $send_user_id,
+                        'Like.receive_user_id' => $receive_user_id
+                    )
+                )
+            );
+
+        return $like['Like']['message_url'];
+    }
 }

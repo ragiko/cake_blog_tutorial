@@ -123,7 +123,9 @@ function hangup() {
             if (is_match) {
                 // 告白メッセージを聞く
                 call({
-                    "type": "listen"
+                    "type": "listen",
+                    "send": user_id,
+                    "receive": other_user_id
                 });
             }
             else {
