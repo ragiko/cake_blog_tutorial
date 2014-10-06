@@ -101,4 +101,42 @@ class LikesController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+    /**
+     * likeボタンを押してマッチングしているかどうかを調べてjsonを返す
+     *
+     * @throws 
+     * @post param: $send_user_id, $receive_user_id 
+     * @return void
+     */
+    public function push() {
+        $this->autoRender = false;
+
+        // 内部のメソッドにPOSTするならrequestAction() 
+        // $result =  $this->requestAction('Controller/method', 
+        //      array('return','user_id'=>$userId)
+        // ); 
+
+        // データをinsertする
+        if ($this->request->is('post')) {
+            $this->Like->create();
+            $this->Like->save($this->request->data);
+        }
+
+        $res = array();
+
+        // マッチングを調べる
+        if ($this->Like->isMatchUsers($this->request->data['send_user_id'], $this->request->data['receive_user_id'])) {
+            array_push($res, array('match' => true));
+        }
+        else {
+            array_push($res, array('match' => false));
+        }
+
+        echo json_encode($res); 
+    }
 }
+
+
+
+

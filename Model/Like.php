@@ -5,9 +5,8 @@ App::uses('AppModel', 'Model');
  *
  */
 class Like extends AppModel {
-
     // ユーザ同士がマッチングしているかどうかを調べる
-    public function is_matching_users($user_id1, $user_id2) {
+    public function isMatchUsers($user_id1, $user_id2) {
 
         $c = $this->find('count', 
             array('conditions' => 
@@ -27,5 +26,5 @@ class Like extends AppModel {
         );
         
         return ($c >= 2) ? true : false;
-    }    
+    }
 }

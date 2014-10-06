@@ -24,7 +24,7 @@
 
     <?php foreach ($users as $user): ?>
     <tr>
-        <td><?php echo  $user['User']['id']; ?></td>
+        <td class="other-user-id"><?php echo  $user['User']['id']; ?></td>
         <td><?php echo $user['User']['name']; ?></td>
         <td><?php echo $user['User']['age']; ?></td>
         <td><?php echo $user['User']['gender']; ?></td>
@@ -35,7 +35,7 @@
         <td><img src="<?php echo  DS  . "files/user/photo/" . $user['User']['id'] . DS . "thumb150_".$user['User']['photo']?>" alt=""></td>
         <td><?php echo $user['User']['created']; ?></td>
         <td>
-            <button>like</button>
+            <button class="like-btn">like</button>
             <?php echo (in_array($user['User']['id'], $like_user_ids)) ? 'is like' : ''; ?>
         </td>
     </tr>
@@ -49,4 +49,33 @@
     'Add User',
     array('controller' => 'users', 'action' => 'add')
 ); ?>
+
+<!-- タイムラインを流しているユーザidを埋め込み -->
+<div class="user-id" data-role="<?php echo $user_id ?>"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+(function($){
+    $(".like-btn").on("click", function (){
+        var user_id = $(".user-id").data('role');
+        var other_user_id = $(this).parent().parent().find(".other-user-id").text();
+
+        console.log("user-id: " + user_id);
+        console.log("other-user-id: " +  other_user_id);
+
+        $.ajax({
+            type: "POST",
+            url: "/cake_blog_tutorial/likes/push",
+            data: {
+                send_user_id: user_id,
+                receive_user_id: other_user_id 
+            }
+        }).done(function( res ) {
+            alert( "データ保存: " + res);
+        }).fail(function() {
+            alert( "error" );
+        }); 
+    });
+})(jQuery);
+</script>
 

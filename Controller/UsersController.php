@@ -13,14 +13,13 @@ class UsersController extends AppController {
     public $helpers = array('Html', 'Form');
 
     public function top($id) {
+        // 自身のユーザをset
+        $this->set('user_id', $id);
 
         // ユーザが興味のあるユーザ群
         $like_user_ids = $this->User->find_like_user_by_id($id);
         $this->set('like_user_ids', $like_user_ids);
-
-        // マッチングを調べる
-        echo $this->Like->is_matching_users(1, 3);
-
+        
         $this->set('users', 
             $this->User->find('all',
                 array(
@@ -34,20 +33,7 @@ class UsersController extends AppController {
         );
     }
 
-    public function test() {
-        $this->autoRender = false;
-
-        $response = new Services_Twilio_Twiml();
-        $response->say("初め", array('language' => 'ja-jp'));
-        $record = $response->record(array( "action" => "http://153.121.51.112/cake_blog_tutorial/users/twiedit/1", 'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 20));
-        $response->say("レコード失敗", array('language' => 'ja-jp'));
-
-        $this->response->type('text/xml');
-        $this->response->body($response);
-        return $this->response;
-    }
-
-
+    
     // twimlから帰ってきてデータをDBに入れる
     public function twiedit($id = null) {
         $this->autoRender = false;
@@ -84,7 +70,7 @@ class UsersController extends AppController {
         $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
 
         $capability = new Services_Twilio_Capability($accountSid, $authToken);
-        $capability->allowClientOutgoing('AP25be2f04e359a0117a2853242b87784d');
+        $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
         // APbcda1076e3aad2873a64f6549f6af1f6
         // PN00cdf931452a284c6b400440a93a7ba0
         $capability->allowClientIncoming("takeda");
@@ -93,19 +79,7 @@ class UsersController extends AppController {
         $this->set('token', $token);
     }
 
-    // ブラウザフォンのテストのためのtwilio
-    public function twiphone() {
-        $this->autoRender = false;
-
-        $response = new Services_Twilio_Twiml();
-        $response->say("Twilio Clientからのテストです", array('language' => 'ja-jp'));
-        $response->dial("your twilio client name", array('callerId' => 'your twilio tel number'));
-        $response->say("通話が終了しました", array('language' => 'ja-jp'));
-
-        $this->response->type('text/xml');
-        $this->response->body($response);
-        return $this->response;
-    }
+    
     
     public function view($id) {
         if (!$id) {
@@ -154,5 +128,8 @@ class UsersController extends AppController {
             $this->request->data = $user;
         }
     }
+
+    
+    
 
 }
