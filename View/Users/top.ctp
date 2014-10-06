@@ -90,9 +90,8 @@ Twilio.Device.incoming(function (conn) {
     }
 });
 
-function call() {
+function call(params) {
     // get the phone number to connect the call to
-    params = {"PhoneNumber": /*$("#client_to_number").val()*/ "" };
     Twilio.Device.connect(params);
 }
 
@@ -119,8 +118,21 @@ function hangup() {
                 receive_user_id: other_user_id 
             }
         }).done(function( res ) {
-            // 告白メッセージを聞く
-            call();
+            var is_match = $.parseJSON(res)[0].match;
+            
+            if (is_match) {
+                // 告白メッセージを聞く
+                call({
+                    "type": "listen"
+                });
+            }
+            else {
+                // ボイスを登録
+                call({
+                    "type": "record"
+                });
+                
+            }
         }).fail(function() {
             alert( "error" );
         }); 

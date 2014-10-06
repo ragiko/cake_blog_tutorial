@@ -32,4 +32,30 @@ class TwimlsController extends AppController {
         $this->response->body($response);
         return $this->response;
     }
+
+
+    public function twiml() {
+        $this->autoRender = false;
+
+        $response = new Services_Twilio_Twiml();
+
+        if (isset($_REQUEST['type'])) {
+            $type = $_REQUEST['type'];
+
+            if ($type === "record") {
+                $response->say("告白を録音します", array('language' => 'ja-jp'));
+                $response->record(array( 'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 5));
+                $response->say("レコード失敗", array('language' => 'ja-jp'));
+            }
+            else if ($type === "listen") {
+                $response->say("告白を再生します", array('language' => 'ja-jp'));
+                $response->play("http://api.twilio.com/2010-04-01/Accounts/ACf29289f2c695bd6b271be0dff46b649a/Recordings/RE512c7a58961f580d4b3f3a7a13196e63");
+                $response->say("告白が終了しました", array('language' => 'ja-jp'));
+            }
+        }
+        
+        $this->response->type('text/xml');
+        $this->response->body($response);
+        return $this->response;
+    }
 }
