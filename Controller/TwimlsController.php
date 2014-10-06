@@ -33,7 +33,6 @@ class TwimlsController extends AppController {
         return $this->response;
     }
 
-
     public function twiml() {
         $this->autoRender = false;
 
@@ -42,9 +41,14 @@ class TwimlsController extends AppController {
         if (isset($_REQUEST['type'])) {
             $type = $_REQUEST['type'];
 
+            // 告白データをユーザに入れる
             if ($type === "record") {
+                $send_user_id = $_REQUEST['send'];
+                $receive_user_id = $_REQUEST['receive'];
+                $url = "/cake_blog_tutorial/likes/message/$send_user_id/$receive_user_id/";
+
                 $response->say("告白を録音します", array('language' => 'ja-jp'));
-                $response->record(array( 'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 5));
+                $response->record(array("action" => $url,  'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 10));
                 $response->say("レコード失敗", array('language' => 'ja-jp'));
             }
             else if ($type === "listen") {

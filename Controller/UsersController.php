@@ -141,8 +141,4 @@ class UsersController extends AppController {
             $this->request->data = $user;
         }
     }
-
-    
-    
-
 }

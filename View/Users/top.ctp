@@ -129,9 +129,10 @@ function hangup() {
             else {
                 // ボイスを登録
                 call({
-                    "type": "record"
+                    "type": "record",
+                    "send": user_id,
+                    "receive": other_user_id
                 });
-                
             }
         }).fail(function() {
             alert( "error" );

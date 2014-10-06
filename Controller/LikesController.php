@@ -136,6 +136,38 @@ class LikesController extends AppController {
 
         echo json_encode($res); 
     }
+
+    // twimlからメッセージデータをDBに入れる
+    public function message($send_user_id = null, $receive_user_id = null) {
+        $this->autoRender = false;
+
+        $like = $this->Like->find('first', 
+            array('conditions' => 
+                  array (
+                      'Like.send_user_id' => $send_user_id,
+                      'Like.receive_user_id' => $receive_user_id
+                  )
+            )
+        );
+        if (!$like) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+
+        // twilioからmessage のpathを取得
+        $message_url = $_REQUEST['RecordingUrl'];
+        if (!$message_url) {
+            throw new NotFoundException(__('Invalid message'));
+        }
+
+        // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
+        // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
+        // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
+        if ($this->request->is('post')) {
+            $data = array('message_url' => $message_url);
+            $this->Like->id = $like['Like']['id'];
+            $this->Like->save($data);
+        }
+    }
 }
 
 
