@@ -16,10 +16,11 @@ class UsersController extends AppController {
         // 自身のユーザをset
         $this->set('user_id', $id);
 
-        // ユーザが興味のあるユーザ群
+        // ユーザが興味のあるユーザidをset
         $like_user_ids = $this->User->find_like_user_by_id($id);
         $this->set('like_user_ids', $like_user_ids);
         
+        // 自分以外のユーザをset
         $this->set('users', 
             $this->User->find('all',
                 array(
@@ -31,6 +32,18 @@ class UsersController extends AppController {
                 )
             )
         );
+
+        /* twilioのtokenをset */
+        // アカウント設定
+        $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
+        $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
+
+        $capability = new Services_Twilio_Capability($accountSid, $authToken);
+        $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
+        $capability->allowClientIncoming("takeda");
+        $token = $capability->generateToken();
+
+        $this->set('token', $token);
     }
 
     

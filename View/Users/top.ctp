@@ -2,6 +2,10 @@
 
 <h1>users</h1>
 
+<!-- twilioのlog -->
+<h2>twilioのlog</h2>
+<h2 id="log">a</h2>
+
 <?php echo $this->Html->link(
     'profile',
     array('controller' => 'users', 'action' => 'view/1')
@@ -53,8 +57,52 @@
 <!-- タイムラインを流しているユーザidを埋め込み -->
 <div class="user-id" data-role="<?php echo $user_id ?>"></div>
 
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>
+<script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
+
+<script type="text/javascript">
+/*
+ * Twilioの通信部分
+ */
+Twilio.Device.setup("<?php echo $token; ?>");
+
+Twilio.Device.ready(function (device) {
+    $("#log").text("架電待機");
+});
+
+Twilio.Device.error(function (error) {
+    $("#log").text("Error: " + error.message);
+});
+
+Twilio.Device.connect(function (conn) {
+    $("#log").text("架電成功");
+});
+
+Twilio.Device.disconnect(function (conn) {
+    $("#log").text("架電終了");
+});
+
+Twilio.Device.incoming(function (conn) {
+    if (confirm('Accept incoming call from ' + conn.parameters.From + '?')){
+        connection=conn;
+        conn.accept();
+    }
+});
+
+function call() {
+    // get the phone number to connect the call to
+    params = {"PhoneNumber": /*$("#client_to_number").val()*/ "" };
+    Twilio.Device.connect(params);
+}
+
+function hangup() {
+    Twilio.Device.disconnectAll();
+}
+
+/*
+ * LIKEボタンを押した時
+ */
 (function($){
     $(".like-btn").on("click", function (){
         var user_id = $(".user-id").data('role');
@@ -71,7 +119,8 @@
                 receive_user_id: other_user_id 
             }
         }).done(function( res ) {
-            alert( "データ保存: " + res);
+            // 告白メッセージを聞く
+            call();
         }).fail(function() {
             alert( "error" );
         }); 
