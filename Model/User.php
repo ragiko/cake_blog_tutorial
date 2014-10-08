@@ -26,24 +26,11 @@ class User extends AppModel {
         return $receive_user_ids;
     }
 
-    // public function is_matching_users($send_user_id, $receive_user_id) {
-    //     $user1 = $this->find('first', array(
-    //         'conditions' => array(
-    //             'User.id' => $send_user_id,
-    //         )
-    //     ));
-
-    //     echo "<pre>";
-    //     print_r($user1);
-    //     echo "</pre>";
-
-    // }
-
     public $validate = array(
-        'name' => array(
+        'facebook_num' => array(
             'rule' => 'notEmpty'
         ),
-        'age' => array(
+        'name' => array(
             'rule' => 'notEmpty'
         ),
         'gender' => array(
@@ -54,20 +41,21 @@ class User extends AppModel {
         )
     );
 
-    public $actsAs = [
-        'Upload.Upload' => [
-            'photo' => [
-                'fields' => [
-                    'dir' => 'photo_dir'
-                ],
-                'thumbnailSizes' => [
-                    'thumb150' => '150x150',
-                    'normal' => '200x200',
-                    'big' => '500x500'
-                ],
-                'path' => '{ROOT}webroot{DS}files{DS}{model}{DS}{field}{DS}',
-                'thumbnailMethod' => 'php'
-            ]
-        ]
-    ];
+    // 画像アップロードの時の設定
+    // public $actsAs = [
+    //     'Upload.Upload' => [
+    //         'photo' => [
+    //             'fields' => [
+    //                 'dir' => 'photo_dir'
+    //             ],
+    //             'thumbnailSizes' => [
+    //                 'thumb150' => '150x150',
+    //                 'normal' => '200x200',
+    //                 'big' => '500x500'
+    //             ],
+    //             'path' => '{ROOT}webroot{DS}files{DS}{model}{DS}{field}{DS}',
+    //             'thumbnailMethod' => 'php'
+    //         ]
+    //     ]
+    // ];
 }

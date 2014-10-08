@@ -18,13 +18,13 @@ class UsersController extends AppController {
             'secret' => '2279d1bfb45e1cb14d61a5d66c6ae1cf',
             'cookie' => true,
         ));
-        $this->Auth->allow('login', 'logout');
+        $this->Auth->allow('login', 'logout', 'top', 'edit', 'add');
     }
 
     public function index() {
         if ($this->Auth->loggedIn()) {
             $facebookId = $this->Facebook->getUser();
-            $this->set('user', $this->User->find('first', ['conditions' => ['User.facebook_id' => $facebookId]]));
+            $this->set('user', $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]));
             $this->set(compact('facebookId'));
 
             // echo "<pre>";
@@ -47,7 +47,7 @@ class UsersController extends AppController {
             $this->_authFacebook();
         }
 
-        $user = $this->User->find('first', ['conditions' => ['User.facebook_id' => $facebookId]]);
+        $user = $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]);
         if (!empty($user['User'])) {
             // $this->Auth->login() では、ユーザー名とパスワードをチェック
             // http://www.moonmile.net/blog/archives/4855
@@ -55,7 +55,7 @@ class UsersController extends AppController {
                 $this->redirect(['action' => 'index']);
             }
         } else {
-            $this->_add();
+            $this->redirect(['action' => 'add']);
         }
 
         $this->redirect(['action' => 'logout']);
@@ -66,36 +66,37 @@ class UsersController extends AppController {
         $this->redirect($this->Auth->logout());
     }
 
-    protected function _authFacebook() {
-        $loginUrl = $this->Facebook->getLoginUrl(['scope' => 'email,publish_stream,user_birthday,user_education_history,user_likes', 'redirect_uri' => Router::fullBaseUrl() . Router::url(['controller' => 'users', 'action' => 'login'])]);
-        return $this->redirect($loginUrl);
-    }
 
-    protected function _add() {
-        $this->autoRender = false;
+    public function add() {
 
-        $facebookInfo = $this->Facebook->api('/me', 'GET');
-        $user = array(
-            'User' => [
-                'facebook_id' => $facebookInfo['id'],
-                'name' => $facebookInfo['name'],
-                'gender' => $facebookInfo['gender'],
-                // TODO: birthdayからage変換したい
-                // 'age' => $facebookInfo['birthday'],
-                'created' => date('Y-m-d H:i:s'),
-                'modified' => date('Y-m-d H:i:s'),
-            ]
-        );
-        $this->User->create();
-        if ($this->User->save($user)) {
-            $this->Session->setFlash(__('登録が完了しました。'));
-        } else {
-            $this->Session->setFlash(__('登録てきません.'));
+        // TODO: ロジックを要修正 and refactor
+        if ($this->request->is('post')) {
+            $this->User->create();
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash(__('登録が完了しました。'));
+                $this->redirect(['action' => 'index']);
+            } else {
+                $this->Session->setFlash(__('登録てきません.'));
+            }
         }
+        else {
+            $facebookInfo = $this->Facebook->api('/me', 'GET');
+            $user = array(
+                'User' => [
+                    'facebook_num' => $facebookInfo['id'],
+                    'name' => $facebookInfo['name'],
+                    'gender' => $facebookInfo['gender'],
+                    // TODO: birthdayからage変換したい
+                    // 'age' => $facebookInfo['birthday'],
+                    'created' => date('Y-m-d H:i:s'),
+                    'modified' => date('Y-m-d H:i:s'),
+                ]
+            );
 
-        $this->redirect(['action' => 'index']);
+            $this->request->data = $user;
+
+        }
     }
-
 
     public function top($id) {
         // 自身のユーザをset
@@ -177,8 +178,6 @@ class UsersController extends AppController {
         $this->set('token', $token);
     }
 
-    
-    
     public function view($id) {
         if (!$id) {
             throw new NotFoundException(__('Invalid user'));
@@ -189,18 +188,6 @@ class UsersController extends AppController {
             throw new NotFoundException(__('Invalid user'));
         }
         $this->set('user', $user);
-    }
-
-    public function add() {
-        if ($this->request->is('post')) {
-            $this->User->create();
-            print_r($this->request->data);
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('Your user has been saved.'));
-                return $this->redirect(array('action' => 'top/1'));
-            }
-            $this->Session->setFlash(__('Unable to add your user.'));
-        }
     }
 
     public function edit($id = null) {
@@ -225,5 +212,13 @@ class UsersController extends AppController {
         if (!$this->request->data) {
             $this->request->data = $user;
         }
+    }
+
+    /*
+     * PROTECTED METHODS
+     */
+    protected function _authFacebook() {
+        $loginUrl = $this->Facebook->getLoginUrl(['scope' => 'email,publish_stream,user_birthday,user_education_history,user_likes', 'redirect_uri' => Router::fullBaseUrl() . Router::url(['controller' => 'users', 'action' => 'login'])]);
+        return $this->redirect($loginUrl);
     }
 }
