@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dc20b3e8a53e9bb977c0b59dc81f4d2b",
+    "hash": "8159828405eef31398e0664889484c64",
     "packages": [
         {
             "name": "cakephp/cakephp",
-            "version": "2.5.4",
+            "version": "2.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "9c2a25d4c055c93dd809574a484e7077f815c236"
+                "reference": "ce98a1ff5738af6db0f42a3647aaaaa5c3773d24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/9c2a25d4c055c93dd809574a484e7077f815c236",
-                "reference": "9c2a25d4c055c93dd809574a484e7077f815c236",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/ce98a1ff5738af6db0f42a3647aaaaa5c3773d24",
+                "reference": "ce98a1ff5738af6db0f42a3647aaaaa5c3773d24",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-09-02 02:05:27"
+            "time": "2014-10-05 02:59:03"
         },
         {
             "name": "composer/installers",
@@ -138,6 +138,52 @@
                 "zikula"
             ],
             "time": "2014-08-18 20:00:12"
+        },
+        {
+            "name": "facebook/php-sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/facebook-php-sdk.git",
+                "reference": "3388ec541761b93651614b48766608c22daad981"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk/zipball/3388ec541761b93651614b48766608c22daad981",
+                "reference": "3388ec541761b93651614b48766608c22daad981",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/facebook-php-sdk/contributors"
+                }
+            ],
+            "description": "Facebook PHP SDK",
+            "homepage": "https://github.com/facebook/facebook-php-sdk",
+            "keywords": [
+                "facebook",
+                "sdk"
+            ],
+            "time": "2014-06-19 19:18:38"
         },
         {
             "name": "josegonzalez/cakephp-upload",
@@ -302,12 +348,65 @@
                 "upload"
             ],
             "time": "2013-09-20 09:33:52"
+        },
+        {
+            "name": "twilio/sdk",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twilio/twilio-php.git",
+                "reference": "a876df2cd5bc873beb450a56e6e410680a5b4e4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/a876df2cd5bc873beb450a56e6e410680a5b4e4c",
+                "reference": "a876df2cd5bc873beb450a56e6e410680a5b4e4c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "require-dev": {
+                "mockery/mockery": ">=0.7.2",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Services_Twilio": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Burke",
+                    "email": "kevin@twilio.com"
+                },
+                {
+                    "name": "Kyle Conroy",
+                    "email": "kyle+pear@twilio.com"
+                }
+            ],
+            "description": "A PHP wrapper for Twilio's API",
+            "homepage": "http://github.com/twilio/twilio-php",
+            "keywords": [
+                "api",
+                "sms",
+                "twilio"
+            ],
+            "time": "2014-07-15 17:50:20"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "twilio/sdk": 20,
+        "facebook/php-sdk": 20
+    },
     "prefer-stable": false,
     "platform": [],
     "platform-dev": []

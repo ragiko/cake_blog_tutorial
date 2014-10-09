@@ -8,7 +8,9 @@
     ],
     "require": {
         "cakephp/cakephp": ">=2.4.9",
-        "josegonzalez/cakephp-upload": "1.0.0"
+        "josegonzalez/cakephp-upload": "1.0.0",
+        "twilio/sdk": "dev-master",
+        "facebook/php-sdk": "dev-master"
     },
     "config": {
         "vendor-dir": "Vendor/"
