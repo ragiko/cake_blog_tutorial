@@ -17,7 +17,7 @@ class LikesController extends AppController {
 	public $components = array('Paginator');
 
     public function beforeFilter() {
-        $this->Auth->allow('check_matching_users', 'update_message_url');
+        $this->Auth->allow('check_matching_users', 'update_message_url', 'is_like_data');
     }
 
 /**
@@ -172,5 +172,18 @@ class LikesController extends AppController {
             $this->Like->id = $like['Like']['id'];
             $this->Like->save($data);
         }
+    }
+
+    public function is_like_data($send_user_id, $receive_user_id) {
+        $this->autoRender = false;
+
+        $res = array();
+        if ($this->Like->isLikeData($send_user_id, $receive_user_id)) {
+            array_push($res, array('is_like' => true));
+        }
+        else {
+            array_push($res, array('is_like' => false));
+        }
+        echo json_encode($res); 
     }
 }

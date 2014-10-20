@@ -100,13 +100,31 @@ function hangup() {
             });
 
             // checkをrender
-            $other_user.find(".is-check-user").text("check");
+            fetchLikeStatus($other_user, user_id, other_user_id);
 
         }).fail(function(e) {
             console.log(e);
             alert( "error" );
         }); 
     });
+
+    // TODO: セキュアーにすべし
+    // likeの状態確認 (send_user, receive_user)
+    function fetchLikeStatus($like_box, send_user_id, receive_user_id) {
+        var url = "/cake_blog_tutorial/likes/is_like_data/" + send_user_id + "/" + receive_user_id  
+
+        $.get(url, function(res){
+            var is_like = $.parseJSON(res)[0].is_like;
+
+            if (is_like) {
+                $like_box.find(".is-check-user").text("check");
+            }
+            else {
+                $like_box.find(".is-check-user").text("");
+            }
+        });
+    }
+    
 })(jQuery);
 </script>
 

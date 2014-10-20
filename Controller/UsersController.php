@@ -48,8 +48,6 @@ class UsersController extends AppController {
             $token = $capability->generateToken();
 
             $this->set(compact('token'));
-
-            
         } else {
             $this->redirect(['action' => 'logout']);
         }
