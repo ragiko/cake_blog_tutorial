@@ -20,7 +20,7 @@ class UsersController extends AppController {
             'cookie' => true,
         ));
         // $this->Auth->allow('login', 'logout', 'top', 'edit', 'add');
-        $this->Auth->allow('login', 'logout', 'add');
+        $this->Auth->allow('login', 'logout', 'add', 'top');
 
     ini_set('memory_limit', '512M');
     }
