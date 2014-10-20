@@ -87,9 +87,6 @@ function hangup() {
                 receive_user_id: other_user_id 
             }
         }).done(function( res ) {
-            // checkをrender
-            $other_user.find(".is-check-user").text("check");
-
             var is_match = $.parseJSON(res)[0].match;
             var call_type = (is_match)? "listen" : "record"; 
 
@@ -101,6 +98,10 @@ function hangup() {
                 "send": user_id,
                 "receive": other_user_id
             });
+
+            // checkをrender
+            $other_user.find(".is-check-user").text("check");
+
         }).fail(function(e) {
             console.log(e);
             alert( "error" );
