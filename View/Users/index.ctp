@@ -14,6 +14,9 @@
             </a>
             <p><?php echo $friend_list['friends']['data'][$i]['name'];?></p>
             <button class="like-btn">like</button>
+            <span class="is-check-user">
+                <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
+            </span>
             <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
         </div>
     <?php endif;?>
@@ -70,6 +73,7 @@ function hangup() {
 (function($){
     $(".like-btn").on("click", function (){
         var user_id = $(".user-id").data('role');
+        var $other_user = $(this).parent();
         var other_user_id = $(this).parent().find(".other-user-id").data('role');
 
         console.log("user-id: " + user_id);
@@ -83,6 +87,9 @@ function hangup() {
                 receive_user_id: other_user_id 
             }
         }).done(function( res ) {
+            // checkをrender
+            $other_user.find(".is-check-user").text("check");
+
             var is_match = $.parseJSON(res)[0].match;
             var call_type = (is_match)? "listen" : "record"; 
 

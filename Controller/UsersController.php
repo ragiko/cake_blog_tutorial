@@ -19,7 +19,7 @@ class UsersController extends AppController {
             'cookie' => true,
         ));
 
-        $this->Auth->allow('login', 'logout', 'add', 'top');
+        $this->Auth->allow('login', 'logout', 'add');
 
         ini_set('memory_limit', '512M');
     }
@@ -34,8 +34,11 @@ class UsersController extends AppController {
             $this->set(compact('facebookId'));
             $this->set(compact('friend_list'));
 
-            // twilioのtokenをset
-            // アカウント設定
+            // ユーザがLikeを押した他のユーザ
+            $like_user_ids = $this->_getLikeUserIds($facebookId);
+            $this->set(compact('like_user_ids'));
+
+            // twilioのtoken
             $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
             $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
 
@@ -45,6 +48,8 @@ class UsersController extends AppController {
             $token = $capability->generateToken();
 
             $this->set(compact('token'));
+
+            
         } else {
             $this->redirect(['action' => 'logout']);
         }
@@ -151,4 +156,16 @@ class UsersController extends AppController {
         $loginUrl = $this->Facebook->getLoginUrl(['scope' => 'email,publish_stream,user_birthday,user_education_history,user_likes', 'redirect_uri' => Router::fullBaseUrl() . Router::url(['controller' => 'users', 'action' => 'login'])]);
         return $this->redirect($loginUrl);
     }
+
+    // ユーザのfacebookidからユーザが好きな他のユーザのIDを返す
+    protected function _getLikeUserIds($facebook_id) {
+        $like_users = $this->Like->find('all', ['conditions' => ['Like.send_user_id' => $facebook_id]]);
+
+        $receive_user_ids = array_map(function ($like) {
+            return $like['Like']['receive_user_id'];
+        }, $like_users);
+
+        return $receive_user_ids;
+    }
+
 }
