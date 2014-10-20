@@ -77,31 +77,23 @@ function hangup() {
 
         $.ajax({
             type: "POST",
-            url: "/cake_blog_tutorial/likes/push",
+            url: "/cake_blog_tutorial/likes/check_matching_users",
             data: {
                 send_user_id: user_id,
                 receive_user_id: other_user_id 
             }
         }).done(function( res ) {
             var is_match = $.parseJSON(res)[0].match;
+            var call_type = (is_match)? "listen" : "record"; 
+
             console.log("is_match: " +  is_match);
-            
-            if (is_match) {
-                // 告白メッセージを聞く
-                call({
-                    "type": "listen",
-                    "send": user_id,
-                    "receive": other_user_id
-                });
-            }
-            else {
-                // ボイスを登録
-                call({
-                    "type": "record",
-                    "send": user_id,
-                    "receive": other_user_id
-                });
-            }
+            console.log("call_type: " +  call_type);
+
+            call({
+                "type": call_type,
+                "send": user_id,
+                "receive": other_user_id
+            });
         }).fail(function(e) {
             console.log(e);
             alert( "error" );
