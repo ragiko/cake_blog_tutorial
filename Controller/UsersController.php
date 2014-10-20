@@ -80,7 +80,6 @@ class UsersController extends AppController {
         $this->redirect($this->Auth->logout());
     }
 
-
     public function add() {
 
         // TODO: ロジックを要修正 and refactor
@@ -110,86 +109,6 @@ class UsersController extends AppController {
             $this->request->data = $user;
 
         }
-    }
-
-    public function top($id) {
-        // 自身のユーザをset
-        $this->set('user_id', $id);
-
-        // ユーザが興味のあるユーザidをset
-        $like_user_ids = $this->User->find_like_user_by_id($id);
-        $this->set('like_user_ids', $like_user_ids);
-        
-        // 自分以外のユーザをset
-        $this->set('users', 
-            $this->User->find('all',
-                array(
-                    'conditions' => array(
-                        'NOT' => array(
-                            'User.id' => array($id)
-                        )
-                    )
-                )
-            )
-        );
-
-        /* twilioのtokenをset */
-        // アカウント設定
-        $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
-        $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
-
-        $capability = new Services_Twilio_Capability($accountSid, $authToken);
-        $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
-        $capability->allowClientIncoming("takeda");
-        $token = $capability->generateToken();
-
-        $this->set('token', $token);
-    }
-
-    
-    // twimlから帰ってきてデータをDBに入れる
-    public function twiedit($id = null) {
-        $this->autoRender = false;
-
-        if (!$id) {
-            throw new NotFoundException(__('Invalid id'));
-        }
-
-        $user = $this->User->findById($id);
-        if (!$user) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-
-        // twilioからmessage のpathを取得
-        $message_path = $_REQUEST['RecordingUrl'];
-        if (!$message_path) {
-            throw new NotFoundException(__('Invalid message'));
-        }
-
-        // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
-        // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
-        // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
-        if ($this->request->is('post')) {
-            $data = array('message_path' => $message_path);
-            $this->User->id = $id;
-            $this->User->save($data);
-        }
-    }
-
-    // ブラウザフォンのテスト
-    public function phone() {
-        // アカウント設定
-        $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
-        $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
-
-        $capability = new Services_Twilio_Capability($accountSid, $authToken);
-        $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
-        // APbcda1076e3aad2873a64f6549f6af1f6
-        // PN00cdf931452a284c6b400440a93a7ba0
-        $capability->allowClientIncoming("takeda");
-        $token = $capability->generateToken();
-
-        $this->set('token', $token);
     }
 
     public function view($id) {

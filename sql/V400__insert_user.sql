@@ -8,7 +8,7 @@ INSERT INTO users (
 )
 VALUES
 (  
-    2,
+    1,
     '99999999991',
     'takeda',
     'male',
