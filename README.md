@@ -1,25 +1,22 @@
-# CAKEPHPのブログチュートリアルを実際にコーディングしてみた
+# Cake PHP & Twilio MASHUP!!!
 
-* ブログチュートリアル: http://book.cakephp.org/2.0/ja/tutorials-and-examples/blog/blog.html
-* composerからcakeをinstall: http://book.cakephp.org/2.0/ja/installation/advanced-installation.html
-
-### set up
-* composerでcakephpをinstall
+### 1. composerにてinstall 
 ```
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install
+make install
 ```
 
-### dbの設定
-* config/database.phpと.dbup/propaties.iniを変更
-
+### 2. dbの設定
 ```
-curl -SslO https://raw.githubusercontent.com/brtriver/dbup/master/dbup.phar
-php dbup.phar up
+make copy-db-config
+vi .dbup/properties.ini # dbupの設定
+vi Config/database.php  # cakephpのdbの設定
+make mig-up             # dbのマイグレーション
 ```
 
-### ディレクトリの追加
-mkdir .dbup/applied
-mkdir tmp
-chmod 777 tmp
-chmod 777 webroot 
+### other
+* httpd.confを適宜設定する
+```
+<Directory <your/folder/path>>
+    Sllowoverride All
+</Directory>
+```
