@@ -16,6 +16,10 @@ class LikesController extends AppController {
  */
 	public $components = array('Paginator');
 
+    public function beforeFilter() {
+        $this->Auth->allow('push', 'message');
+    }
+
 /**
  * index method
  *

@@ -22,7 +22,7 @@ class UsersController extends AppController {
         // $this->Auth->allow('login', 'logout', 'top', 'edit', 'add');
         $this->Auth->allow('login', 'logout', 'add', 'top');
 
-    ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '512M');
     }
 
     public function index() {
@@ -31,12 +31,23 @@ class UsersController extends AppController {
             $this->set('user', $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]));
 
             // $me = $this->facebook->api('/me');
-            $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{gender}");
+            $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{name,gender}");
 
             $this->set(compact('facebookId'));
             // $this->set(compact('me'));
             $this->set(compact('friend_list'));
 
+            /* twilioのtokenをset */
+            // アカウント設定
+            $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
+            $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
+
+            $capability = new Services_Twilio_Capability($accountSid, $authToken);
+            $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
+            $capability->allowClientIncoming("takeda");
+            $token = $capability->generateToken();
+
+            $this->set('token', $token);
         } else {
             $this->redirect(['action' => 'logout']);
         }
