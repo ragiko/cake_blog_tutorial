@@ -6,7 +6,6 @@ App::import('Vendor', 'facebook/php-sdk/src/facebook');
 
 class UsersController extends AppController {
 
-
     // 別のモデルを使うときは$usesを書く
     // http://book.cakephp.org/2.0/en/controllers.html#Controller::$uses
     public $uses = array('Like', 'User');
@@ -19,7 +18,7 @@ class UsersController extends AppController {
             'secret' => '2279d1bfb45e1cb14d61a5d66c6ae1cf',
             'cookie' => true,
         ));
-        // $this->Auth->allow('login', 'logout', 'top', 'edit', 'add');
+
         $this->Auth->allow('login', 'logout', 'add', 'top');
 
         ini_set('memory_limit', '512M');
@@ -28,16 +27,14 @@ class UsersController extends AppController {
     public function index() {
         if ($this->Auth->loggedIn()) {
             $facebookId = $this->Facebook->getUser();
-            $this->set('user', $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]));
-
-            // $me = $this->facebook->api('/me');
+            $user = $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]);
             $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{name,gender}");
 
+            $this->set(compact('user'));
             $this->set(compact('facebookId'));
-            // $this->set(compact('me'));
             $this->set(compact('friend_list'));
 
-            /* twilioのtokenをset */
+            // twilioのtokenをset
             // アカウント設定
             $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
             $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
@@ -47,7 +44,7 @@ class UsersController extends AppController {
             $capability->allowClientIncoming("takeda");
             $token = $capability->generateToken();
 
-            $this->set('token', $token);
+            $this->set(compact('token'));
         } else {
             $this->redirect(['action' => 'logout']);
         }
@@ -55,6 +52,7 @@ class UsersController extends AppController {
 
     public function login() {
         $this->autoRender = false;
+
         // facebook OAuth login
         $facebookId = $this->Facebook->getUser();
         if (!$facebookId) {
@@ -107,7 +105,6 @@ class UsersController extends AppController {
             );
 
             $this->request->data = $user;
-
         }
     }
 
