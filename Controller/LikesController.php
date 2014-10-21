@@ -16,6 +16,10 @@ class LikesController extends AppController {
  */
 	public $components = array('Paginator');
 
+    public function beforeFilter() {
+        $this->Auth->allow('check_matching_users', 'update_message_url', 'is_like_data', 'delete_like');
+    }
+
 /**
  * index method
  *
@@ -110,70 +114,89 @@ class LikesController extends AppController {
      * @post param: $send_user_id, $receive_user_id 
      * @return void
      */
-    public function push() {
+    public function check_matching_users() {
         $this->autoRender = false;
 
-        // 内部のメソッドにPOSTするならrequestAction() 
-        // $result =  $this->requestAction('Controller/method', 
-        //      array('return','user_id'=>$userId)
-        // ); 
-
-        // データをinsertする
         if ($this->request->is('post')) {
-            $this->Like->create();
-            $this->Like->save($this->request->data);
-        }
 
-        $res = array();
+            // データをinsertする
+            $send_user_id = $this->request->data['send_user_id'];
+            $receive_user_id = $this->request->data['receive_user_id'];
 
-        // マッチングを調べる
-        if ($this->Like->isMatchUsers($this->request->data['send_user_id'], $this->request->data['receive_user_id'])) {
-            array_push($res, array('match' => true));
-        }
-        else {
-            array_push($res, array('match' => false));
-        }
+            if (!$this->Like->isLikeData($send_user_id, $receive_user_id)) {
+                $this->log("not_is_like_data");
+                $this->Like->create();
+                $this->Like->save($this->request->data);
+            }
+            
+            // マッチングを調べる
+            $res = array();
+            if ($this->Like->isMatchUsers($send_user_id, $receive_user_id)) {
+                array_push($res, array('match' => true));
+            }
+            else {
+                array_push($res, array('match' => false));
+            }
 
-        echo json_encode($res); 
+            echo json_encode($res); 
+        }
     }
 
     // twimlからメッセージデータをDBに入れる
-    public function message($send_user_id = null, $receive_user_id = null) {
+    public function update_message_url($send_user_id, $receive_user_id) {
         $this->autoRender = false;
 
-        $like = $this->Like->find('first', 
-            array('conditions' => 
-                  array (
-                      'Like.send_user_id' => $send_user_id,
-                      'Like.receive_user_id' => $receive_user_id
-                  )
-            )
-        );
-        if (!$like) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-
-        // twilioからmessage のpathを取得
-        $message_url = $_REQUEST['RecordingUrl'];
-        if (!$message_url) {
-            throw new NotFoundException(__('Invalid message'));
-        }
-
-        // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
-        // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
-        // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
         if ($this->request->is('post')) {
+            $like = $this->Like->find('first', 
+                array('conditions' => 
+                      array (
+                          'Like.send_user_id' => $send_user_id,
+                          'Like.receive_user_id' => $receive_user_id
+                      )
+                )
+            );
+            if (!$like) {
+                throw new NotFoundException(__('Invalid user'));
+            }
+
+            // twilioからmessage のpathを取得
+            $message_url = $_REQUEST['RecordingUrl'];
+            if (!$message_url) {
+                throw new NotFoundException(__('Invalid message'));
+            }
+
+            // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
+            // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
+            // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
             $data = array('message_url' => $message_url);
             $this->Like->id = $like['Like']['id'];
             $this->Like->save($data);
         }
     }
 
-    // // test用
-    // public function a() {
-    //     $a = $this->Like->findMessageUrlByUserIds(2, 1);
-    //     echo "<pre>";
-    //     print_r($a);
-    //     echo "</pre>";
-    // }
+    public function is_like_data($send_user_id, $receive_user_id) {
+        $this->autoRender = false;
+
+        $res = array();
+        if ($this->Like->isLikeData($send_user_id, $receive_user_id)) {
+            array_push($res, array('is_like' => true));
+        }
+        else {
+            array_push($res, array('is_like' => false));
+        }
+        echo json_encode($res); 
+    }
+
+    public function delete_like() {
+        $this->autoRender = false;
+
+		if ($this->request->is('post')) {
+            $send_user_id = $this->request->data['send_user_id'];
+            $receive_user_id = $this->request->data['receive_user_id'];
+            $id = $this->Like->findIdByUserIds($send_user_id, $receive_user_id);
+            $this->Like->id = $id;
+            $this->Like->delete();
+        }
+	}
+
 }

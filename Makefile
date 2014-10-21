@@ -19,3 +19,5 @@ mig-up:
 update:
 	$(PHP) composer.phar update
 
+db-reset:
+	rm -rf .dbup/applied/*

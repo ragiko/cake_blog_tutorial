@@ -13,19 +13,6 @@ class User extends AppModel {
         ) 
     );
 
-    // ユーザが好きなユーザidを取得
-    public function find_like_user_by_id($id) {
-        $user = $this->find('first', array(
-            'conditions' => array('User.id' => $id)
-        ));
-
-        $receive_user_ids = array_map(function ($like) {
-            return $like['receive_user_id'];
-        }, $user['Like']);
-
-        return $receive_user_ids;
-    }
-
     public $validate = array(
         'facebook_num' => array(
             'rule' => 'notEmpty'
@@ -58,4 +45,17 @@ class User extends AppModel {
     //         ]
     //     ]
     // ];
+
+    // // ユーザが好きなユーザidを取得
+    // public function find_like_user_by_id($id) {
+    //     $user = $this->find('first', array(
+    //         'conditions' => array('User.id' => $id)
+    //     ));
+
+    //     $receive_user_ids = array_map(function ($like) {
+    //         return $like['receive_user_id'];
+    //     }, $user['Like']);
+
+    //     return $receive_user_ids;
+    // }
 }

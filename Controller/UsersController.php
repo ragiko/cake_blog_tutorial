@@ -6,7 +6,6 @@ App::import('Vendor', 'facebook/php-sdk/src/facebook');
 
 class UsersController extends AppController {
 
-
     // 別のモデルを使うときは$usesを書く
     // http://book.cakephp.org/2.0/en/controllers.html#Controller::$uses
     public $uses = array('Like', 'User');
@@ -19,24 +18,36 @@ class UsersController extends AppController {
             'secret' => '2279d1bfb45e1cb14d61a5d66c6ae1cf',
             'cookie' => true,
         ));
-        // $this->Auth->allow('login', 'logout', 'top', 'edit', 'add');
+
         $this->Auth->allow('login', 'logout', 'add');
 
-    ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '512M');
     }
 
     public function index() {
         if ($this->Auth->loggedIn()) {
             $facebookId = $this->Facebook->getUser();
-            $this->set('user', $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]));
+            $user = $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]);
+            $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{name,gender}");
 
-            // $me = $this->facebook->api('/me');
-            $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{gender}");
-
+            $this->set(compact('user'));
             $this->set(compact('facebookId'));
-            // $this->set(compact('me'));
             $this->set(compact('friend_list'));
 
+            // ユーザがLikeを押した他のユーザ
+            $like_user_ids = $this->_getLikeUserIds($facebookId);
+            $this->set(compact('like_user_ids'));
+
+            // twilioのtoken
+            $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
+            $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
+
+            $capability = new Services_Twilio_Capability($accountSid, $authToken);
+            $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
+            $capability->allowClientIncoming("takeda");
+            $token = $capability->generateToken();
+
+            $this->set(compact('token'));
         } else {
             $this->redirect(['action' => 'logout']);
         }
@@ -44,6 +55,7 @@ class UsersController extends AppController {
 
     public function login() {
         $this->autoRender = false;
+
         // facebook OAuth login
         $facebookId = $this->Facebook->getUser();
         if (!$facebookId) {
@@ -68,7 +80,6 @@ class UsersController extends AppController {
         $this->Facebook->destroySession();
         $this->redirect($this->Auth->logout());
     }
-
 
     public function add() {
 
@@ -97,88 +108,7 @@ class UsersController extends AppController {
             );
 
             $this->request->data = $user;
-
         }
-    }
-
-    public function top($id) {
-        // 自身のユーザをset
-        $this->set('user_id', $id);
-
-        // ユーザが興味のあるユーザidをset
-        $like_user_ids = $this->User->find_like_user_by_id($id);
-        $this->set('like_user_ids', $like_user_ids);
-        
-        // 自分以外のユーザをset
-        $this->set('users', 
-            $this->User->find('all',
-                array(
-                    'conditions' => array(
-                        'NOT' => array(
-                            'User.id' => array($id)
-                        )
-                    )
-                )
-            )
-        );
-
-        /* twilioのtokenをset */
-        // アカウント設定
-        $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
-        $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
-
-        $capability = new Services_Twilio_Capability($accountSid, $authToken);
-        $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
-        $capability->allowClientIncoming("takeda");
-        $token = $capability->generateToken();
-
-        $this->set('token', $token);
-    }
-
-    
-    // twimlから帰ってきてデータをDBに入れる
-    public function twiedit($id = null) {
-        $this->autoRender = false;
-
-        if (!$id) {
-            throw new NotFoundException(__('Invalid id'));
-        }
-
-        $user = $this->User->findById($id);
-        if (!$user) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-
-        // twilioからmessage のpathを取得
-        $message_path = $_REQUEST['RecordingUrl'];
-        if (!$message_path) {
-            throw new NotFoundException(__('Invalid message'));
-        }
-
-        // データを新しく作るか更新するかは、モデルの id フィールドによって決まります。$Model->id がセットされていれば、このIDをプライマリーキーにもつレコードが更新されます。それ以外は新しくレコードが作られます。
-        // 新しくデータを作るのではなく、データを更新したい場合は、data配列にプライマリーキーのフィールドを渡してください。
-        // http://book.cakephp.org/2.0/ja/models/saving-your-data.html
-        if ($this->request->is('post')) {
-            $data = array('message_path' => $message_path);
-            $this->User->id = $id;
-            $this->User->save($data);
-        }
-    }
-
-    // ブラウザフォンのテスト
-    public function phone() {
-        // アカウント設定
-        $accountSid = 'ACf29289f2c695bd6b271be0dff46b649a';
-        $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
-
-        $capability = new Services_Twilio_Capability($accountSid, $authToken);
-        $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
-        // APbcda1076e3aad2873a64f6549f6af1f6
-        // PN00cdf931452a284c6b400440a93a7ba0
-        $capability->allowClientIncoming("takeda");
-        $token = $capability->generateToken();
-
-        $this->set('token', $token);
     }
 
     public function view($id) {
@@ -224,4 +154,16 @@ class UsersController extends AppController {
         $loginUrl = $this->Facebook->getLoginUrl(['scope' => 'email,publish_stream,user_birthday,user_education_history,user_likes', 'redirect_uri' => Router::fullBaseUrl() . Router::url(['controller' => 'users', 'action' => 'login'])]);
         return $this->redirect($loginUrl);
     }
+
+    // ユーザのfacebookidからユーザが好きな他のユーザのIDを返す
+    protected function _getLikeUserIds($facebook_id) {
+        $like_users = $this->Like->find('all', ['conditions' => ['Like.send_user_id' => $facebook_id]]);
+
+        $receive_user_ids = array_map(function ($like) {
+            return $like['Like']['receive_user_id'];
+        }, $like_users);
+
+        return $receive_user_ids;
+    }
+
 }
