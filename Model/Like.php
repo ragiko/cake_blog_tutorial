@@ -41,6 +41,19 @@ class Like extends AppModel {
         return $like['Like']['message_url'];
     }
 
+    public function findIdByUserIds($send_user_id, $receive_user_id) {
+        $like = $this->find('first', 
+            array('conditions' => 
+                 array (
+                     'Like.send_user_id' => $send_user_id,
+                     'Like.receive_user_id' => $receive_user_id
+                 )
+            )
+        );
+
+        return $like['Like']['id'];
+    }
+
     public function isLikeData($send_user_id, $receive_user_id) {
         $cnt = $this->find('count', 
             array('conditions' => 

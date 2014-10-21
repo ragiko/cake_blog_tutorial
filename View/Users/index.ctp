@@ -17,6 +17,9 @@
             <span class="is-check-user">
                 <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
             </span>
+            <span class="like-delete">
+                <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn'>delete</button>" : ""; ?>
+            </span>
             <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
         </div>
     <?php endif;?>
@@ -108,6 +111,31 @@ function hangup() {
         }); 
     });
 
+    $(".like-delete-btn").on("click", function (){
+        var user_id = $(".user-id").data('role');
+        var $other_user = $(this).parent().parent();
+        var other_user_id = $(this).parent().parent().find(".other-user-id").data('role');
+
+        console.log("user-id: " + user_id);
+        console.log("other-user-id: " +  other_user_id);
+
+        $.ajax({
+            type: "POST",
+            url: "/cake_blog_tutorial/likes/delete_like",
+            data: {
+                send_user_id: user_id,
+                receive_user_id: other_user_id 
+            }
+        }).done(function( res ) {
+
+            fetchLikeStatus($other_user, user_id, other_user_id);
+
+        }).fail(function(e) {
+            console.log(e);
+            alert( "error" );
+        }); 
+    });
+
     // TODO: セキュアーにすべし
     // likeの状態確認 (send_user, receive_user)
     function fetchLikeStatus($like_box, send_user_id, receive_user_id) {
@@ -118,9 +146,11 @@ function hangup() {
 
             if (is_like) {
                 $like_box.find(".is-check-user").text("check");
+                $like_box.find(".like-delete").html("<button class='like-delete-btn'>delete</button>");
             }
             else {
                 $like_box.find(".is-check-user").text("");
+                $like_box.find(".like-delete").html("");
             }
         });
     }
