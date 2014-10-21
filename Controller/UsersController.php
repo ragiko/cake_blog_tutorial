@@ -43,8 +43,8 @@ class UsersController extends AppController {
             $authToken = 'b48373aa8cc8f558aa727f073a1d0ff7';
 
             $capability = new Services_Twilio_Capability($accountSid, $authToken);
-            $capability->allowClientOutgoing('APbcda1076e3aad2873a64f6549f6af1f6');
-            $capability->allowClientIncoming("takeda");
+            $capability->allowClientOutgoing('AP25be2f04e359a0117a2853242b87784d');
+            $capability->allowClientIncoming("take");
             $token = $capability->generateToken();
 
             $this->set(compact('token'));

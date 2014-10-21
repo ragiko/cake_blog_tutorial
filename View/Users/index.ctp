@@ -20,6 +20,8 @@
             <span class="like-delete">
                 <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn'>delete</button>" : ""; ?>
             </span>
+            <button class="button1">1</button>
+            <button class="button2">2</button>
             <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
         </div>
     <?php endif;?>
@@ -31,12 +33,12 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
-
 <script type="text/javascript">
 /*
  * Twilioの通信部分
  */
 Twilio.Device.setup("<?php echo $token; ?>");
+var connection=null;
 
 Twilio.Device.ready(function (device) {
     $("#log").text("架電待機");
@@ -47,6 +49,7 @@ Twilio.Device.error(function (error) {
 });
 
 Twilio.Device.connect(function (conn) {
+    connection=conn;
     $("#log").text("架電成功");
 });
 
@@ -70,10 +73,29 @@ function hangup() {
     Twilio.Device.disconnectAll();
 }
 
-/*
- * LIKEボタンを押した時
- */
+
 (function($){
+    /*
+     * PHONEボタンを押したときの処理
+     */
+    $.each(['0','1','2','3','4','5','6','7','8','9','star','pound'], function(index, value) {
+        $('.button' + value).click(function(){
+            if(connection) {
+                if (value=='star') {
+                    connection.sendDigits('*')
+                } else if (value=='pound') {
+                    connection.sendDigits('#')
+                } else {
+                    connection.sendDigits(value)
+                }
+                return false;
+            }
+        });
+    });
+
+    /*
+     * LIKEボタンを押した時
+     */
     $(".like-btn").on("click", function (){
         var user_id = $(".user-id").data('role');
         var $other_user = $(this).parent();

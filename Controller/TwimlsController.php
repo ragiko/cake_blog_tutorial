@@ -8,7 +8,7 @@ class TwimlsController extends AppController {
     public $uses = array('Like', 'Twiml');
 
     public function beforeFilter() {
-        $this->Auth->allow('twiml');
+        $this->Auth->allow('twiml', 'gather');
     }
 
     public function twiml() {
@@ -37,12 +37,25 @@ class TwimlsController extends AppController {
 
                 $response->say("告白を再生します", array('language' => 'ja-jp'));
                 $response->play($message_url);
-                $response->say("告白が終了しました", array('language' => 'ja-jp'));
+
+                $gather = $response->gather(array('numDigits' => 1, 'timeout' => 10, 'action' => 'twiml-gather-action.php', 'method' => 'GET' ));
+                $gather->say("告白を受けるならには1を拒否は2を押してください。", array('language' => 'ja-jp'));
             }
         }
-        
+
         $this->response->type('text/xml');
         $this->response->body($response);
         return $this->response;
     }
+
+    // public function dial() {
+    //     $this->autoRender = false;
+
+    //     $response = new Services_Twilio_Twiml();
+    //     $response->sms('test', array('to' => "+819071485047", 'from' => '+815031717728'));
+    //     $this->response->type('text/xml');
+    //     $this->response->body($response);
+    //     return $this->response;
+    // }
+
 }
