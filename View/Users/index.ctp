@@ -5,44 +5,18 @@
 <p><?php echo $this->Html->link('トップページ', ['controller' => 'pages', 'action' => 'top']); ?></p>
 <p><?php echo $this->Html->link('ログアウト', ['controller' => 'users', 'action' => 'logout']); ?></p>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <h2>異性の顔</h2>
 <div class="row like-wrapper">
 <?php for($i=0; $i < count($friend_list['friends']['data']); $i++):?>
     <?php if($user['User']['gender'] != $friend_list['friends']['data'][$i]['gender']):?>
         <div class="like-box col-xs-3" >
             <!-- <a href="https://www.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>"></a> -->
-            <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>"/>
+            <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" />
             <p><?php echo $friend_list['friends']['data'][$i]['name'];?></p>
-            <button class="like-btn">like</button>
+            <button data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>">kwsk</button>
             <span class="is-check-user">
                 <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
             </span>
-            <span class="like-delete">
-                <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn'>delete</button>" : ""; ?>
-            </span>
-            <button class="button1">1</button>
-            <button class="button2">2</button>
-            <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
 
             <!-- Modal -->
             <div class="modal fade" id="modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -54,10 +28,22 @@
                   </div>
                   <div class="modal-body">
                     <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>"/>
+
+                    <button class="like-btn">like</button>
+                    <button class="button1">1</button>
+                    <button class="button2">2</button>
+
+                    <!-- 相手をcheckしていた時 -->
+                    <span class="is-check-user">
+                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
+                    </span>
+                    <span class="like-delete">
+                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn'>delete</button>" : ""; ?>
+                    </span>
+                    <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                   </div>
                 </div>
               </div>
@@ -66,10 +52,6 @@
     <?php endif;?>
 <?php endfor;?>
 </div>
-
-
-
-
 
 <!-- タイムラインを流しているユーザidを埋め込み -->
 <h2 id="log"></h2>
@@ -120,6 +102,8 @@ function hangup() {
 }
 
 
+
+
 (function($){
     /*
      *  masonryの設定
@@ -151,7 +135,8 @@ function hangup() {
      */
     $(".like-btn").on("click", function (){
         var user_id = $(".user-id").data('role');
-        var $other_user = $(this).parent();
+        // TODO: リファクター
+        var $other_user = $(this).parent().parent().parent().parent().parent();
         var other_user_id = $(this).parent().find(".other-user-id").data('role');
 
         console.log("user-id: " + user_id);
@@ -186,14 +171,17 @@ function hangup() {
         }); 
     });
 
-    $(".like-delete-btn").on("click", function (){
+    $(".like-delete-btn").on("click", function () {
         var user_id = $(".user-id").data('role');
-        var $other_user = $(this).parent().parent();
+        // TODO: リファクター
+        var $other_user = $(this).parent().parent().parent().parent().parent().parent();
+    
+        console.log($other_user);
         var other_user_id = $(this).parent().parent().find(".other-user-id").data('role');
-
+    
         console.log("user-id: " + user_id);
         console.log("other-user-id: " +  other_user_id);
-
+    
         $.ajax({
             type: "POST",
             url: "/cake_blog_tutorial/likes/delete_like",
@@ -202,9 +190,9 @@ function hangup() {
                 receive_user_id: other_user_id 
             }
         }).done(function( res ) {
-
+    
             fetchLikeStatus($other_user, user_id, other_user_id);
-
+    
         }).fail(function(e) {
             console.log(e);
             alert( "error" );
@@ -222,6 +210,34 @@ function hangup() {
             if (is_like) {
                 $like_box.find(".is-check-user").text("check");
                 $like_box.find(".like-delete").html("<button class='like-delete-btn'>delete</button>");
+                // 再bind
+                $(".like-delete-btn").on("click", function () {
+                    var user_id = $(".user-id").data('role');
+                    // TODO: リファクター
+                    var $other_user = $(this).parent().parent().parent().parent().parent().parent();
+                
+                    console.log($other_user);
+                    var other_user_id = $(this).parent().parent().find(".other-user-id").data('role');
+                
+                    console.log("user-id: " + user_id);
+                    console.log("other-user-id: " +  other_user_id);
+                
+                    $.ajax({
+                        type: "POST",
+                        url: "/cake_blog_tutorial/likes/delete_like",
+                        data: {
+                            send_user_id: user_id,
+                            receive_user_id: other_user_id 
+                        }
+                    }).done(function( res ) {
+                
+                        fetchLikeStatus($other_user, user_id, other_user_id);
+                
+                    }).fail(function(e) {
+                        console.log(e);
+                        alert( "error" );
+                    }); 
+                });
             }
             else {
                 $like_box.find(".is-check-user").text("");
@@ -229,7 +245,6 @@ function hangup() {
             }
         });
     }
-    
 })(jQuery);
 </script>
 
