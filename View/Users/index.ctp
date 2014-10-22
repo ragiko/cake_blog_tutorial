@@ -29,6 +29,7 @@
                   <div class="modal-body">
                     <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>"/>
 
+                    <p>status: <span id="log"></span></p>
                     <button class="like-btn">like</button>
                     <button class="button1">1</button>
                     <button class="button2">2</button>
@@ -54,7 +55,6 @@
 </div>
 
 <!-- タイムラインを流しているユーザidを埋め込み -->
-<h2 id="log"></h2>
 <div class="user-id" data-role="<?php echo $user['User']['facebook_num']; ?>"></div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -100,9 +100,6 @@ function call(params) {
 function hangup() {
     Twilio.Device.disconnectAll();
 }
-
-
-
 
 (function($){
     /*
