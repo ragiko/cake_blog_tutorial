@@ -1,9 +1,27 @@
-<h2>マイページ</h2>
-<img src="https://graph.facebook.com/<?php echo $facebookId;?>/picture?width=150" alt="" />
-<p><?php echo $user['User']['gender']; ?></p>
-<p><?php echo $user['User']['name']; ?></p>
-<p><?php echo $this->Html->link('トップページ', ['controller' => 'pages', 'action' => 'top']); ?></p>
-<p><?php echo $this->Html->link('ログアウト', ['controller' => 'users', 'action' => 'logout']); ?></p>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <?php echo $this->Html->link('Many Heart', ['class'=>'navbar-brand', 'controller' => 'users', 'action' => 'index']); ?>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </li>
+        <li><?php echo $this->Html->link('Profile', ['controller' => 'users', 'action' => 'profile']); ?></li>
+        <li><?php echo $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']); ?></li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <h2>異性の顔</h2>
 <div class="row like-wrapper">

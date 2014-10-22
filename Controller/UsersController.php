@@ -53,6 +53,18 @@ class UsersController extends AppController {
         }
     }
 
+    public function profile() {
+        if ($this->Auth->loggedIn()) {
+            $facebookId = $this->Facebook->getUser();
+            $user = $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]);
+
+            $this->set(compact('user'));
+            $this->set(compact('facebookId'));
+        } else {
+            $this->redirect(['action' => 'logout']);
+        }
+    }
+
     public function login() {
         $this->autoRender = false;
 
