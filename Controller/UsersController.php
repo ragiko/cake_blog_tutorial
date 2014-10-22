@@ -19,7 +19,7 @@ class UsersController extends AppController {
             'cookie' => true,
         ));
 
-        $this->Auth->allow('login', 'logout', 'add');
+        $this->Auth->allow('login', 'logout', 'add', 'a');
 
         ini_set('memory_limit', '512M');
     }
@@ -165,5 +165,6 @@ class UsersController extends AppController {
 
         return $receive_user_ids;
     }
+
 
 }

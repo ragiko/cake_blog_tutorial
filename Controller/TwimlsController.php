@@ -5,7 +5,7 @@ App::import('Vendor', 'twilio/sdk/Services/Twilio');
 
 class TwimlsController extends AppController {
 
-    public $uses = array('Like', 'Twiml');
+    public $uses = array('Like', 'Twiml', 'User');
 
     public function beforeFilter() {
         $this->Auth->allow('twiml',  'dial');
@@ -53,11 +53,19 @@ class TwimlsController extends AppController {
 
         $response = new Services_Twilio_Twiml();
 
-        if (empty($_POST['Digits'])) { }
-        else if ($_POST['Digits'] === "1") {
-            // $response->dial("+819071485047", array('callerId' => '+815031717728', 'timeout' => '10'));
+        $this->log($_GET['Digits']);
+        if (empty($_GET['Digits'])) { 
+        }
+        else if ($_GET['Digits'] === "1") {
+            $r_facebook_num = $_GET['r_user_id'];
+            $phone_num = $this->User->findPhoneNumberByFacebookNumber($r_facebook_num);
+            $call_id = "+81" . substr($phone_num, 1, strlen($phone_num));
+
+            $response->say("電話を繋げます", array('language' => 'ja-jp'));
+            $response->dial("+819071485047", array('callerId' => '+815031717728', 'timeout' => '10'));
+            $response->say("電話が終了しました", array('language' => 'ja-jp'));
         } 
-        else if ($_POST['Digits'] === "2") {
+        else if ($_GET['Digits'] === "2") {
             $response->say("告白を終了します", array('language' => 'ja-jp'));
         }
 

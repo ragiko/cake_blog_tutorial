@@ -58,4 +58,16 @@ class User extends AppModel {
 
     //     return $receive_user_ids;
     // }
+
+    public function findPhoneNumberByFacebookNumber($num) {
+        $user = $this->find('first', 
+            array('conditions' => 
+                 array (
+                     'User.facebook_num' => $num,
+                 )
+             )
+         );
+
+         return $user['User']['phone_number']; 
+    }
 }

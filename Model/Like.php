@@ -66,5 +66,4 @@ class Like extends AppModel {
 
          return $cnt > 0 ? true : false; 
     }
-    
 }
