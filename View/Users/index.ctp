@@ -59,6 +59,9 @@
                     <span class="like-delete">
                         <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn'>delete</button>" : ""; ?>
                     </span>
+                    <span class="like-message">
+                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? $this->Like->makeMessageHtml($facebookId, $friend_list['friends']['data'][$i]['id']) : ""; ?>
+                    </span>
                     <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
                   </div>
                   <div class="modal-footer">

@@ -38,7 +38,11 @@ class Like extends AppModel {
                 )
             );
 
-        return $like['Like']['message_url'];
+        if (isset($like['Like'])) {
+            return $like['Like']['message_url'];
+        } else {
+            return "";
+        }
     }
 
     public function findIdByUserIds($send_user_id, $receive_user_id) {
