@@ -24,6 +24,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 <body>
 	<div id="container">
@@ -34,7 +35,9 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 
 			<?php echo $this->Session->flash(); ?>
 
-			<?php echo $this->fetch('content'); ?>
+            <div class="container">
+		    	<?php echo $this->fetch('content'); ?>
+            </div>
 		</div>
 		<div id="footer">
 			<?php echo $this->Html->link(

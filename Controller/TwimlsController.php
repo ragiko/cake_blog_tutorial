@@ -8,7 +8,7 @@ class TwimlsController extends AppController {
     public $uses = array('Like', 'Twiml');
 
     public function beforeFilter() {
-        $this->Auth->allow('twiml', 'gather');
+        $this->Auth->allow('twiml',  'dial');
     }
 
     public function twiml() {
@@ -38,7 +38,7 @@ class TwimlsController extends AppController {
                 $response->say("告白を再生します", array('language' => 'ja-jp'));
                 $response->play($message_url);
 
-                $gather = $response->gather(array('numDigits' => 1, 'timeout' => 10, 'action' => 'twiml-gather-action.php', 'method' => 'GET' ));
+                $gather = $response->gather(array('numDigits' => 1, 'timeout' => 10, 'action' => "http://153.121.51.112/cake_test/twimls/dial?r_user_id=$receive_user_id", 'method' => 'GET' ));
                 $gather->say("告白を受けるならには1を拒否は2を押してください。", array('language' => 'ja-jp'));
             }
         }
@@ -48,14 +48,21 @@ class TwimlsController extends AppController {
         return $this->response;
     }
 
-    // public function dial() {
-    //     $this->autoRender = false;
+    public function dial() {
+        $this->autoRender = false;
 
-    //     $response = new Services_Twilio_Twiml();
-    //     $response->sms('test', array('to' => "+819071485047", 'from' => '+815031717728'));
-    //     $this->response->type('text/xml');
-    //     $this->response->body($response);
-    //     return $this->response;
-    // }
+        $response = new Services_Twilio_Twiml();
 
+        if (empty($_POST['Digits'])) { }
+        else if ($_POST['Digits'] === "1") {
+            // $response->dial("+819071485047", array('callerId' => '+815031717728', 'timeout' => '10'));
+        } 
+        else if ($_POST['Digits'] === "2") {
+            $response->say("告白を終了します", array('language' => 'ja-jp'));
+        }
+
+        $this->response->type('text/xml');
+        $this->response->body($response);
+        return $this->response;
+    }
 }
