@@ -17,7 +17,7 @@ class LikesController extends AppController {
 	public $components = array('Paginator');
 
     public function beforeFilter() {
-        $this->Auth->allow('check_matching_users', 'update_message_url', 'is_like_data', 'delete_like');
+        $this->Auth->allow('check_matching_users', 'update_message_url', 'is_like_data', 'delete_like', 'message');
     }
 
 /**
@@ -174,6 +174,7 @@ class LikesController extends AppController {
         }
     }
 
+    // likeが存在するかしないか
     public function is_like_data($send_user_id, $receive_user_id) {
         $this->autoRender = false;
 
@@ -199,4 +200,12 @@ class LikesController extends AppController {
         }
 	}
 
+    // API: messageのURLを取得
+    public function message($send_user_id, $receive_user_id) {
+        $this->autoRender = false;
+
+        $message_url = $this->Like->findMessageUrlByUserIds($send_user_id, $receive_user_id);
+        echo json_encode(array('message_url' => $message_url)); 
+        
+    }
 }

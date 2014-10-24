@@ -1,27 +1,5 @@
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <?php echo $this->Html->link('Many Heart', ['class'=>'navbar-brand', 'controller' => 'users', 'action' => 'index']); ?>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-        </li>
-        <li><?php echo $this->Html->link('Profile', ['controller' => 'users', 'action' => 'profile']); ?></li>
-        <li><?php echo $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']); ?></li>
-      </ul>
-    </div>
-  </div>
-</div>
+<button class="testtest">testtest</button>
+
 
 <h2>異性の顔</h2>
 <div class="row like-wrapper">
@@ -77,6 +55,9 @@
 
 <!-- タイムラインを流しているユーザidを埋め込み -->
 <div class="user-id" data-role="<?php echo $user['User']['facebook_num']; ?>"></div>
+<!-- like-user-now -->
+<div class="like-user-now" data-role=""></div>
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -104,6 +85,8 @@ Twilio.Device.connect(function (conn) {
 
 Twilio.Device.disconnect(function (conn) {
     $("#log").text("架電終了");
+    console.log("架電終了");
+    fetchMessageStatus();
 });
 
 Twilio.Device.incoming(function (conn) {
@@ -120,6 +103,22 @@ function call(params) {
 
 function hangup() {
     Twilio.Device.disconnectAll();
+}
+
+// modalにmessageのDomを追加
+function fetchMessageStatus() {
+    var send_user_id = $(".user-id").data('role');
+    var receive_user_id = $(".like-user-now").data('role');
+    var url = "/cake_test/likes/message/" + send_user_id + "/" + receive_user_id;
+
+    $.get(url, function(res){
+        var modal_id = "#modal-" + $(".like-user-now").data('role');
+        var $modal = $(modal_id);
+        var message_url = $.parseJSON(res).message_url;
+
+        console.log(message_url);
+        $modal.find(".like-message").html("<audio src='" + message_url + "' controls></audio>");
+    });
 }
 
 (function($){
@@ -152,10 +151,15 @@ function hangup() {
      * LIKEボタンを押した時
      */
     $(".like-btn").on("click", function (){
+
+        
         var user_id = $(".user-id").data('role');
         // TODO: リファクター
         var $other_user = $(this).parent().parent().parent().parent().parent();
         var other_user_id = $(this).parent().find(".other-user-id").data('role');
+
+        // 現在クリックしているuserを記録
+        $(".like-user-now").data('role', other_user_id);
 
         console.log("user-id: " + user_id);
         console.log("other-user-id: " +  other_user_id);
@@ -263,6 +267,7 @@ function hangup() {
             }
         });
     }
+
 })(jQuery);
 </script>
 
