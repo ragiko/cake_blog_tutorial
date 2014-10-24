@@ -57,9 +57,38 @@ class UsersController extends AppController {
         if ($this->Auth->loggedIn()) {
             $facebookId = $this->Facebook->getUser();
             $user = $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]);
+            $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{name,gender}");
+            
+            $my_likes = $this->Like->find('all', 
+                array('conditions' => 
+                    array (
+                        'Like.send_user_id' => $facebookId,
+                    )
+                )
+            );
+
+            // likeを送ったユーザidを取得 
+            $like_user_ids = array_map(function ($like) {
+                return $like['Like']['receive_user_id'];
+            }, $my_likes);
+
+            // ユーザidからfacebook APIを使ってユーザの名前を調べる
+            $like_users = array_filter($friend_list['friends']['data'],
+                function ($friend) use ($like_user_ids) {
+                    return in_array($friend['id'], $like_user_ids);
+                });
+
+            // facebookユーザの要素にmessage_urlを追加
+            $like_users = array_map(function ($user) use ($facebookId) {
+                return array_merge(
+                    $user, 
+                    ['message_url' => $this->Like->findMessageUrlByUserIds($facebookId, $user['id'])]
+                );
+            }, $like_users);
 
             $this->set(compact('user'));
             $this->set(compact('facebookId'));
+            $this->set(compact('like_users'));
         } else {
             $this->redirect(['action' => 'logout']);
         }

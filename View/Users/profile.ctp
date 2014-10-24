@@ -40,3 +40,15 @@
         <th>告白ボイス再生</th>
     </tr>
 </table>
+
+<table class="table">
+<?php foreach ($like_users as $user):?>
+    <tr>
+        <th><img src="https://graph.facebook.com/<?php echo $user['id'];?>/picture?height=300" alt="" class="img-responsive" /></th>
+        <th><p><?php echo $user['name']; ?></p></th>
+        <th><audio src="<?php echo $user['message_url']; ?>" controls></audio></th>
+    </tr>
+<?php endforeach;?>
+</table>
+
+
