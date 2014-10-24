@@ -56,9 +56,14 @@ class UsersController extends AppController {
     public function profile() {
         if ($this->Auth->loggedIn()) {
             $facebookId = $this->Facebook->getUser();
+            $this->set(compact('facebookId'));
+
             $user = $this->User->find('first', ['conditions' => ['User.facebook_num' => $facebookId]]);
+            $this->set(compact('user'));
+
             $friend_list = $this->Facebook->api("/v1.0/me?fields=friends{name,gender}");
             
+            /*** userがlikeを押したuserの情報を取得 ***/
             $my_likes = $this->Like->find('all', 
                 array('conditions' => 
                     array (
@@ -85,10 +90,35 @@ class UsersController extends AppController {
                     ['message_url' => $this->Like->findMessageUrlByUserIds($facebookId, $user['id'])]
                 );
             }, $like_users);
-
-            $this->set(compact('user'));
-            $this->set(compact('facebookId'));
             $this->set(compact('like_users'));
+
+            /*** マッチングしているユーザ達の情報を返す ***/
+            // マッチングしているユーザのfacebook idを検索
+            $matching_users = array();
+            foreach ($my_likes as $my_like) {
+                // 相手からのlikeを調べる
+                $like = $this->Like->find('first', 
+                    array('conditions' => 
+                         array (
+                             'Like.send_user_id' => $my_like['Like']['receive_user_id'],
+                             'Like.receive_user_id' => $facebookId
+                         )
+                     )
+                );
+                
+                // マッチングしているlikeならば
+                if (!empty($like)) {
+                    $user = $this->User->find('first', 
+                        array('conditions' => 
+                            array (
+                                'User.facebook_num' => $my_like['Like']['receive_user_id'] // 相手の情報
+                            )
+                        ));
+                    $matching_user = array_merge($user, $like); // 相手の情報と, 告白ボイスをマージ
+                    array_push($matching_users, $matching_user);
+                }
+            }
+            $this->set(compact('matching_users'));
         } else {
             $this->redirect(['action' => 'logout']);
         }

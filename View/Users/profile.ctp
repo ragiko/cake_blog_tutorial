@@ -31,16 +31,16 @@
 
 <h2>相手からの告白ボイスリスト</h2>
 <table class="table">
+<?php foreach ($matching_users as $user):?>
     <tr>
-        <th>Aさん</th>
-        <th>告白ボイス再生</th>
+        <th><img src="https://graph.facebook.com/<?php echo $user['User']['facebook_num'];?>/picture?height=300" alt="" class="img-responsive" /></th>
+        <th><p><?php echo $user['User']['name']; ?></p></th>
+        <th><audio src="<?php echo $user['Like']['message_url']; ?>" controls></audio></th>
     </tr>
-    <tr>
-        <th>Bさん</th>
-        <th>告白ボイス再生</th>
-    </tr>
+<?php endforeach;?>
 </table>
 
+<h2>自分の告白ボイスリスト</h2>
 <table class="table">
 <?php foreach ($like_users as $user):?>
     <tr>
