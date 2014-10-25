@@ -6,6 +6,6 @@ class LikeHelper extends AppHelper {
         $model = new Like();
 
         $message = $model->findMessageUrlByUserIds($send_user_id, $receive_user_id);
-        echo "<audio src='$message' controls></audio>";
+        return "<audio src='$message' controls></audio>";
     }
 }

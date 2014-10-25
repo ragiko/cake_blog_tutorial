@@ -1,10 +1,10 @@
 (function($){
     $('.box').hover(
         function(){
-            $(this).find('.caption').slideDown(250); //.fadeIn(250)
+            $(this).find('.caption').fadeIn(250);  // slideDown(250);
         },
         function(){
-            $(this).find('.caption').slideUp(250); //.fadeOut(205)
+            $(this).find('.caption').fadeOut(250); // slideUp(250);
         }
     ); 
 })(jQuery);

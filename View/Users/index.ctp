@@ -1,4 +1,3 @@
-
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -24,25 +23,18 @@
     </div>
 </div>
 
-
-<h2>異性の顔</h2>
 <div class="row like-wrapper">
 <?php for($i=0; $i < count($friend_list['friends']['data']); $i++):?>
     <?php if($user['User']['gender'] == $friend_list['friends']['data'][$i]['gender']):?>
-        <div class="like-box box col-xs-3" >
+        <div class="like-box box pin col-xs-3" >
             <!-- <a href="https://www.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>"></a> -->
             <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" />
-            <p><?php echo $friend_list['friends']['data'][$i]['name'];?></p>
-            <button data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>">kwsk</button>
-            <span class="is-check-user">
-                <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
-            </span>
+            <span><?php echo $friend_list['friends']['data'][$i]['name'];?></span>
+            <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? '<span class="is-check-user label label-default">告白済み</span>' : ""; ?>
 
             <div class="caption">
-                <h4>Thumbnail Headline</h4>
-                <p>short thumbnail description</p>
-                <p><a href="" class="label label-danger" rel="tooltip" title="Zoom">Zoom</a>
-                <a href="" class="label label-default" rel="tooltip" title="Download now">Download</a></p>
+                <h4><?php echo $friend_list['friends']['data'][$i]['name'];?></h4>
+                <button data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>" href="#" class="btn btn-danger btn-large"><i class="icon-heart"></i>気になる ♡</button>
             </div>
 
             <!-- Modal -->
@@ -51,26 +43,23 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><?php echo $friend_list['friends']['data'][$i]['name'];?></h4>
+                    <span class="modal-title" id="myModalLabel"><?php echo $friend_list['friends']['data'][$i]['name'];?></span>
+                    <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? '<span class="is-check-user label label-default">告白済み</span>' : ""; ?>
+
                   </div>
                   <div class="modal-body">
                     <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" data-toggle="modal" data-target="#modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>"/>
 
-                    <p>status: <span id="log"></span></p>
-                    <button class="like-btn">like</button>
+                    <p>録音準備: <span class="log">準備中</span></p>
+                    <button class="like-btn btn btn-danger btn-large btn-block">告白する</button>
                     <button class="button1">1</button>
                     <button class="button2">2</button>
-
-                    <!-- 相手をcheckしていた時 -->
-                    <span class="is-check-user">
-                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
-                    </span>
-                    <span class="like-delete">
-                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn'>delete</button>" : ""; ?>
-                    </span>
-                    <span class="like-message">
-                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? $this->Like->makeMessageHtml($facebookId, $friend_list['friends']['data'][$i]['id']) : ""; ?>
-                    </span>
+                    <div class="like-delete">
+                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn btn btn-large btn-block'>告白を削除</button>" : ""; ?>
+                    </div>
+                    <div class="like-message">
+                        <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? '<dl class="dl-horizontal"><dt>告白</dt><dd>' . $this->Like->makeMessageHtml($facebookId, $friend_list['friends']['data'][$i]['id']) . '</dd></dl>' : ""; ?>
+                    </div>
                     <div class="other-user-id" data-role="<?php echo $friend_list['friends']['data'][$i]['id'];?>"></div>
                   </div>
                   <div class="modal-footer">
@@ -103,21 +92,21 @@ Twilio.Device.setup("<?php echo $token; ?>");
 var connection=null;
 
 Twilio.Device.ready(function (device) {
-    $("#log").text("架電待機");
+    $(".log").text("準備完了");
 });
 
 Twilio.Device.error(function (error) {
-    $("#log").text("Error: " + error.message);
+    $(".log").text("Error: " + error.message);
 });
 
 Twilio.Device.connect(function (conn) {
     connection=conn;
-    $("#log").text("架電成功");
+    $(".log").text("成功");
 });
 
 Twilio.Device.disconnect(function (conn) {
-    $("#log").text("架電終了");
-    console.log("架電終了");
+    $(".log").text("終了");
+    console.log("終了");
     fetchMessageStatus();
 
     /*
@@ -156,7 +145,7 @@ function fetchMessageStatus() {
         var message_url = $.parseJSON(res).message_url;
 
         console.log(message_url);
-        $modal.find(".like-message").html("<audio src='" + message_url + "' controls></audio>");
+        $modal.find(".like-message").html("<dl class='dl-horizontal'><dt>告白</dt><dd><audio src='" + message_url + "' controls></audio></dd></dl>");
     });
 }
 
@@ -283,7 +272,7 @@ function fetchMessageStatus() {
 
             if (is_like) {
                 $like_box.find(".is-check-user").text("check");
-                $like_box.find(".like-delete").html("<button class='like-delete-btn'>delete</button>");
+                $like_box.find(".like-delete").html("<button class='like-delete-btn btn btn-large btn-block'>告白を削除</button>");
                 // 再bind
                 $(".like-delete-btn").on("click", function () {
                     var user_id = $(".user-id").data('role');

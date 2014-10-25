@@ -1,6 +1,9 @@
 body {
   padding-top: 50px;
+  background-color: #E9E9E9 !important;
 }
+
+
  
 .thumbnail {
     position:relative;
@@ -11,12 +14,86 @@ body {
     position:absolute;
     top:0;
     right:0;
-    background:rgba(66, 139, 202, 0.75);
+    background:rgba(243, 156, 18, 0.6);
     width:100%;
     height:100%;
     padding:2%;
+    padding-top: 35%;
     display: none;
     text-align:center;
     color:#fff !important;
     z-index:2;
+}
+
+.pin {
+    box-sizing: border-box;
+    display: inline-block;
+    background: #FEFEFE;
+    border: 2px solid #FAFAFA;
+    box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+    margin: 5px 0;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    padding: 10px;
+    padding-bottom: 5px;
+    background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
+    opacity: 1;
+    
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+.pin img {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+}
+
+.pin p {
+    font: 18px/20px Arial, sans-serif;
+    color: #333;
+    margin: 0;
+}
+
+
+/* USER PAGE */
+.is-check-user {
+    margin-left: 10px;
+}
+
+.like-message {
+    margin-top: 42px;
+}
+
+.like-delete-btn {
+    margin-top: 10px;
+}
+
+.like-btn {
+    margin-top: 10px;
+}
+
+/* BOOTSTRAP UPDATE */
+
+.navbar-inverse {
+    background-color: #FFF !important;
+    border-color: #FFF !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.22);
+}
+
+.navbar-nav a:hover {
+    color: #000 !important;
+}
+
+dl dd:nth-child(4n+2),
+dl dt:nth-child(4n+1) {
+    background-color: #FFF !important;
+}
+
+#content {
+  background-color: #E9E9E9 !important;
 }
