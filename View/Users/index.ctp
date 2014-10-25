@@ -25,7 +25,7 @@
 
 <div class="row like-wrapper">
 <?php for($i=0; $i < count($friend_list['friends']['data']); $i++):?>
-    <?php if(isset($friend_list['friends']['data'][$i]['gender']) && $user['User']['gender'] == $friend_list['friends']['data'][$i]['gender']):?>
+    <?php if(isset($friend_list['friends']['data'][$i]['gender']) && $user['User']['gender'] != $friend_list['friends']['data'][$i]['gender']):?>
         <div class="like-box box pin col-xs-3" >
             <!-- <a href="https://www.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>"></a> -->
             <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" />
@@ -52,6 +52,7 @@
 
                     <p>録音準備: <span class="log">準備中</span></p>
                     <button class="like-btn btn btn-danger btn-large btn-block">告白する</button>
+                    <button class="call-disconnect like-btn btn btn-info btn-large btn-block">切断</button>
                     <button class="button1">1</button>
                     <button class="button2">2</button>
                     <div class="like-delete">
@@ -102,11 +103,13 @@ Twilio.Device.error(function (error) {
 Twilio.Device.connect(function (conn) {
     connection=conn;
     $(".log").text("成功");
+    
+    // 切断ボタンを表示
+    $(".call-disconnect").show();
 });
 
 Twilio.Device.disconnect(function (conn) {
     $(".log").text("終了");
-    console.log("終了");
     fetchMessageStatus();
 
     /*
@@ -114,7 +117,8 @@ Twilio.Device.disconnect(function (conn) {
      */
     $(".button1").hide();
     $(".button2").hide();
-
+    // 切断ボタンを表示
+    $(".call-disconnect").hide();
 });
 
 Twilio.Device.incoming(function (conn) {
@@ -156,6 +160,15 @@ function fetchMessageStatus() {
      */
     $(".button1").hide();
     $(".button2").hide();
+    $(".call-disconnect").hide();
+
+    /*
+     * 通話の切断用のボタン
+     */
+    $(".call-disconnect").on("click", function () {
+        hangup();
+    });
+
 
     /*
      *  masonryの設定

@@ -27,7 +27,6 @@
 <img src="https://graph.facebook.com/<?php echo $facebookId;?>/picture?width=150" alt="" />
 <p><?php echo $user['User']['gender']; ?></p>
 <p><?php echo $user['User']['name']; ?></p>
-<p><?php echo $this->Html->link('トップページ', ['controller' => 'users', 'action' => 'index']); ?></p>
 
 <h2>相手からの告白ボイスリスト</h2>
 <table class="table">
