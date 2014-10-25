@@ -111,6 +111,13 @@ Twilio.Device.disconnect(function (conn) {
     $("#log").text("架電終了");
     console.log("架電終了");
     fetchMessageStatus();
+
+    /*
+     *  マッチング時の返信ボタン
+     */
+    $(".button1").hide();
+    $(".button2").hide();
+
 });
 
 Twilio.Device.incoming(function (conn) {
@@ -145,7 +152,14 @@ function fetchMessageStatus() {
     });
 }
 
+
 (function($){
+    /*
+     *  マッチング時の返信ボタン
+     */
+    $(".button1").hide();
+    $(".button2").hide();
+
     /*
      *  masonryの設定
      */
@@ -207,6 +221,12 @@ function fetchMessageStatus() {
                 "send": user_id,
                 "receive": other_user_id
             });
+
+            // 返信buttonをrender
+            if (is_match) {
+                $other_user.find(".button1").show();
+                $other_user.find(".button2").show();
+            } 
 
             // checkをrender
             fetchLikeStatus($other_user, user_id, other_user_id);
@@ -290,6 +310,7 @@ function fetchMessageStatus() {
                 $like_box.find(".like-delete").html("");
                 $like_box.find(".like-message").html("");
             }
+
         });
     }
 
