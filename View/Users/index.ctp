@@ -25,7 +25,7 @@
 
 <div class="row like-wrapper">
 <?php for($i=0; $i < count($friend_list['friends']['data']); $i++):?>
-    <?php if($user['User']['gender'] == $friend_list['friends']['data'][$i]['gender']):?>
+    <?php if(isset($friend_list['friends']['data'][$i]['gender']) && $user['User']['gender'] == $friend_list['friends']['data'][$i]['gender']):?>
         <div class="like-box box pin col-xs-3" >
             <!-- <a href="https://www.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>"></a> -->
             <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" />
