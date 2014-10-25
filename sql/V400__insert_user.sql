@@ -1,6 +1,7 @@
 INSERT INTO users (
     id,
     facebook_num,
+    phone_number,
     name,
     gender,
     created,
@@ -9,9 +10,10 @@ INSERT INTO users (
 VALUES
 (  
     1,
-    '99999999991',
-    'takeda',
-    'male',
+    '100003861936520',
+    '09071485047',
+    'morita satuki',
+    'female',
     NOW(),
     NOW()
 );
