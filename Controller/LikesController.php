@@ -172,6 +172,9 @@ class LikesController extends AppController {
             $this->Like->id = $like['Like']['id'];
             $this->Like->save($data);
         }
+
+        // twimlのコードを返す
+        echo '<?xml version="1.0" encoding="UTF-8"?><Response />';
     }
 
     // likeが存在するかしないか
