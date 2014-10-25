@@ -7,7 +7,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <?php echo $this->Html->link('Many Heart', ['class'=>'navbar-brand', 'controller' => 'users', 'action' => 'index']); ?>
+            <?php 
+              echo $this->Html->image("logo.png", array(
+                  "width" => "90",
+                  "alt" => "logo",
+                      'url' => array('controller' => 'users', 'action' => 'index')
+                  ));
+            ?>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -53,8 +59,8 @@
                     <p>録音準備: <span class="log">準備中</span></p>
                     <button class="like-btn btn btn-danger btn-large btn-block">告白する</button>
                     <button class="call-disconnect like-btn btn btn-info btn-large btn-block">切断</button>
-                    <button class="button1">1</button>
-                    <button class="button2">2</button>
+                    <button class="button1 btn btn-warning btn-large btn-block">ありがとう</button>
+                    <button class="button2 btn btn-success btn-large btn-block">ごめんなさい</button>
                     <div class="like-delete">
                         <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "<button class='like-delete-btn btn btn-large btn-block'>告白を削除</button>" : ""; ?>
                     </div>

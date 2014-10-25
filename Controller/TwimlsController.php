@@ -39,7 +39,7 @@ class TwimlsController extends AppController {
                 $response->play($message_url);
 
                 $gather = $response->gather(array('numDigits' => 1, 'timeout' => 60, 'action' => "http://153.121.51.112/manyheart/twimls/dial?r_user_id=$receive_user_id", 'method' => 'GET' ));
-                $gather->say("告白を受けるならには1を拒否は2を押してください。", array('language' => 'ja-jp'));
+                $gather->say("告白を受けるならありがとうボタンを、受けないならごめんなさいボタンを押してください。", array('language' => 'ja-jp'));
             }
         }
 

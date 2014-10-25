@@ -7,7 +7,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <?php echo $this->Html->link('Many Heart', ['class'=>'navbar-brand', 'controller' => 'users', 'action' => 'index']); ?>
+      <?php 
+        echo $this->Html->image("logo.png", array(
+            "width" => "90",
+            "alt" => "logo",
+                'url' => array('controller' => 'users', 'action' => 'index')
+            ));
+      ?>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
