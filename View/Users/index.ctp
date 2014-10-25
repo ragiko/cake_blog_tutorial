@@ -18,9 +18,12 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form class="navbar-form navbar-right">
-                        <input type="text" class="form-control" placeholder="Search...">
-                    </form>
+		   <?php
+			 echo $this->Form->create();
+ 			 echo $this->Form->text('text1',array('label' => false, 'div' => false));
+			 echo $this->Form->end();
+    			 //echo $this->Form->end("送信");
+		   ?>			
                 </li>
                 <li><?php echo $this->Html->link('Profile', ['controller' => 'users', 'action' => 'profile']); ?></li>
                 <li><?php echo $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']); ?></li>

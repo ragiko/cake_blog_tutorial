@@ -32,7 +32,25 @@ class UsersController extends AppController {
 
             $this->set(compact('user'));
             $this->set(compact('facebookId'));
-            $this->set(compact('friend_list'));
+		
+	    if ($this->request->isPost()){
+                $name = $this->request->data['Like']['text1'];
+                $this->set(compact('name'));
+		$count = 0;
+		for($i=0; $i <count($friend_list['friends']['data']); $i++){
+			if(stristr($friend_list['friends']['data'][$i]['name'],$name)){
+				$friend['friends']['data'][$count] = array();
+				$friend['friends']['data'][$count] = $friend_list['friends']['data'][$i];
+				$count++;
+			}
+		}
+		$friend_list = $friend;
+	        $this->set(compact('friend_list'));
+       	    }else{
+		$this->set(compact('friend_list'));
+              	$name = 'takeda';
+                $this->set(compact('name'));
+            }
 
             // ユーザがLikeを押した他のユーザ
             $like_user_ids = $this->_getLikeUserIds($facebookId);
