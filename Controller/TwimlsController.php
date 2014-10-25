@@ -23,7 +23,7 @@ class TwimlsController extends AppController {
             if ($type === "record") {
                 $send_user_id = $_REQUEST['send'];
                 $receive_user_id = $_REQUEST['receive'];
-                $url = "/cake_test/likes/update_message_url/$send_user_id/$receive_user_id/";
+                $url = "/manyheart/likes/update_message_url/$send_user_id/$receive_user_id/";
 
                 $response->say("告白を録音します", array('language' => 'ja-jp'));
                 $response->record(array("action" => $url,  'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 60));
@@ -38,7 +38,7 @@ class TwimlsController extends AppController {
                 $response->say("告白を再生します", array('language' => 'ja-jp'));
                 $response->play($message_url);
 
-                $gather = $response->gather(array('numDigits' => 1, 'timeout' => 60, 'action' => "http://153.121.51.112/cake_test/twimls/dial?r_user_id=$receive_user_id", 'method' => 'GET' ));
+                $gather = $response->gather(array('numDigits' => 1, 'timeout' => 60, 'action' => "http://153.121.51.112/manyheart/twimls/dial?r_user_id=$receive_user_id", 'method' => 'GET' ));
                 $gather->say("告白を受けるならには1を拒否は2を押してください。", array('language' => 'ja-jp'));
             }
         }

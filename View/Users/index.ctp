@@ -141,7 +141,7 @@ function hangup() {
 function fetchMessageStatus() {
     var send_user_id = $(".user-id").data('role');
     var receive_user_id = $(".like-user-now").data('role');
-    var url = "/cake_test/likes/message/" + send_user_id + "/" + receive_user_id;
+    var url = "/manyheart/likes/message/" + send_user_id + "/" + receive_user_id;
 
     $.get(url, function(res){
         var modal_id = "#modal-" + $(".like-user-now").data('role');
@@ -214,7 +214,7 @@ function fetchMessageStatus() {
 
         $.ajax({
             type: "POST",
-            url: "/cake_test/likes/check_matching_users",
+            url: "/manyheart/likes/check_matching_users",
             data: {
                 send_user_id: user_id,
                 receive_user_id: other_user_id 
@@ -260,7 +260,7 @@ function fetchMessageStatus() {
     
         $.ajax({
             type: "POST",
-            url: "/cake_test/likes/delete_like",
+            url: "/manyheart/likes/delete_like",
             data: {
                 send_user_id: user_id,
                 receive_user_id: other_user_id 
@@ -278,7 +278,7 @@ function fetchMessageStatus() {
     // TODO: セキュアーにすべし
     // likeの状態確認 (send_user, receive_user)
     function fetchLikeStatus($like_box, send_user_id, receive_user_id) {
-        var url = "/cake_test/likes/is_like_data/" + send_user_id + "/" + receive_user_id  
+        var url = "/manyheart/likes/is_like_data/" + send_user_id + "/" + receive_user_id  
 
         $.get(url, function(res){
             var is_like = $.parseJSON(res)[0].is_like;
@@ -300,7 +300,7 @@ function fetchMessageStatus() {
                 
                     $.ajax({
                         type: "POST",
-                        url: "/cake_test/likes/delete_like",
+                        url: "/manyheart/likes/delete_like",
                         data: {
                             send_user_id: user_id,
                             receive_user_id: other_user_id 
