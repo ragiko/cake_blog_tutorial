@@ -29,7 +29,7 @@
 <div class="row like-wrapper">
 <?php for($i=0; $i < count($friend_list['friends']['data']); $i++):?>
     <?php if($user['User']['gender'] == $friend_list['friends']['data'][$i]['gender']):?>
-        <div class="like-box col-xs-3" >
+        <div class="like-box box col-xs-3" >
             <!-- <a href="https://www.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>"></a> -->
             <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" />
             <p><?php echo $friend_list['friends']['data'][$i]['name'];?></p>
@@ -37,6 +37,13 @@
             <span class="is-check-user">
                 <?php echo in_array($friend_list['friends']['data'][$i]['id'], $like_user_ids) ? "check" : ""; ?>
             </span>
+
+            <div class="caption">
+                <h4>Thumbnail Headline</h4>
+                <p>short thumbnail description</p>
+                <p><a href="" class="label label-danger" rel="tooltip" title="Zoom">Zoom</a>
+                <a href="" class="label label-default" rel="tooltip" title="Download now">Download</a></p>
+            </div>
 
             <!-- Modal -->
             <div class="modal fade" id="modal-<?php echo $friend_list['friends']['data'][$i]['id'];?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -86,6 +93,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <?php echo $this->Html->script('masonry.pkgd.min'); ?>
+<?php echo $this->Html->script('caption'); ?>
 <script type="text/javascript" src="http://static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
 <script type="text/javascript">
 /*
