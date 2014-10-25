@@ -23,7 +23,7 @@ class TwimlsController extends AppController {
             if ($type === "record") {
                 $send_user_id = $_REQUEST['send'];
                 $receive_user_id = $_REQUEST['receive'];
-                $url = "/cake_blog_tutorial/likes/update_message_url/$send_user_id/$receive_user_id/";
+                $url = "/cake_test/likes/update_message_url/$send_user_id/$receive_user_id/";
 
                 $response->say("告白を録音します", array('language' => 'ja-jp'));
                 $response->record(array("action" => $url,  'method' => "POST", 'finishOnKey' => '#', 'maxLength' => 5));

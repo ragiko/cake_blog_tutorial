@@ -28,7 +28,7 @@
 <h2>異性の顔</h2>
 <div class="row like-wrapper">
 <?php for($i=0; $i < count($friend_list['friends']['data']); $i++):?>
-    <?php if($user['User']['gender'] != $friend_list['friends']['data'][$i]['gender']):?>
+    <?php if($user['User']['gender'] == $friend_list['friends']['data'][$i]['gender']):?>
         <div class="like-box col-xs-3" >
             <!-- <a href="https://www.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>"></a> -->
             <img src="https://graph.facebook.com/<?php echo $friend_list['friends']['data'][$i]['id'];?>/picture?height=300" alt="" class="img-responsive" />
@@ -190,7 +190,7 @@ function fetchMessageStatus() {
 
         $.ajax({
             type: "POST",
-            url: "/cake_blog_tutorial/likes/check_matching_users",
+            url: "/cake_test/likes/check_matching_users",
             data: {
                 send_user_id: user_id,
                 receive_user_id: other_user_id 
@@ -230,7 +230,7 @@ function fetchMessageStatus() {
     
         $.ajax({
             type: "POST",
-            url: "/cake_blog_tutorial/likes/delete_like",
+            url: "/cake_test/likes/delete_like",
             data: {
                 send_user_id: user_id,
                 receive_user_id: other_user_id 
@@ -248,7 +248,7 @@ function fetchMessageStatus() {
     // TODO: セキュアーにすべし
     // likeの状態確認 (send_user, receive_user)
     function fetchLikeStatus($like_box, send_user_id, receive_user_id) {
-        var url = "/cake_blog_tutorial/likes/is_like_data/" + send_user_id + "/" + receive_user_id  
+        var url = "/cake_test/likes/is_like_data/" + send_user_id + "/" + receive_user_id  
 
         $.get(url, function(res){
             var is_like = $.parseJSON(res)[0].is_like;
@@ -270,7 +270,7 @@ function fetchMessageStatus() {
                 
                     $.ajax({
                         type: "POST",
-                        url: "/cake_blog_tutorial/likes/delete_like",
+                        url: "/cake_test/likes/delete_like",
                         data: {
                             send_user_id: user_id,
                             receive_user_id: other_user_id 
