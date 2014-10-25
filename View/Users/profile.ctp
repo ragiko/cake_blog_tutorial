@@ -31,6 +31,7 @@
             <div class="like-box box pin col-xs-4" >
                 <img src="https://graph.facebook.com/<?php echo $user['User']['facebook_num'];?>/picture?height=300" alt="" class="img-responsive" />
                 <p><?php echo $user['User']['name']; ?></p>
+                <a href="tel:<?php echo $user['User']['phone_number']; ?>">(<?php echo $user['User']['phone_number']; ?>)</a>
                 <audio class="profile-message"src="<?php echo $user['Like']['message_url']; ?>" controls></audio>
             </div>
         <?php endforeach;?>
