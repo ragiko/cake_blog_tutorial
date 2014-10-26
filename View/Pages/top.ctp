@@ -54,7 +54,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">About</a>
+                        <a href="#">AAbout</a>
                     </li>
                     <li>
                         <a href="#">Services</a>
@@ -108,7 +108,7 @@
 		    </a></p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-		    <?php echo $this->html->image('1.png',array('class' => 'img-responsive','width' >= '900','height' >= '600')); ?>                    
+		    <?php echo $this->html->image('1.jpg',array('class' => 'img-responsive','width' >= '900','height' >= '600')); ?>                    
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
                     <p class="lead">お互いがlikeボタンを押した時にお互いの告白ボイスが相手の元に届けられます。</br>あなたが何人にlikeボタンを押してもそれは誰にも知られる事がありません。</p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-		    <?php echo $this->html->image('deai2.png',array('class' => 'img-responsive')); ?>                   
+		    <?php echo $this->html->image('deai2.jpg',array('class' => 'img-responsive')); ?>                   
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
                 </div>
 
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-		    <?php echo $this->html->image('banner-bg.png',array('class' => 'img-responsive')); ?>
+		    <?php echo $this->html->image('banner-bg.jpg',array('class' => 'img-responsive')); ?>
                 </div>
             </div>
         </div>
