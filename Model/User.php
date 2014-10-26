@@ -24,8 +24,15 @@ class User extends AppModel {
             'rule' => 'notEmpty'
         ),
         'phone_number' => array(
-            'rule' => 'notEmpty'
-        )
+	    'rule1' => array(
+		  'rule' => 'numeric',
+		  'message' => '電話番号は数字のみで入力してください'
+	    ),
+	    'rule2' => array(
+		  'rule' => array('between',7,15),
+		  'message' => '7桁以上15桁以内で入力してください'
+	    )
+	)
     );
 
     // 画像アップロードの時の設定
@@ -67,7 +74,6 @@ class User extends AppModel {
                  )
              )
          );
-
          return $user['User']['phone_number']; 
     }
 }
