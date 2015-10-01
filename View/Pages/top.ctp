@@ -1,222 +1,90 @@
-<h1>ランディングページ</h1>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Landing Page - Start Bootstrap Theme</title>
-
-    <!-- Bootstrap Core CSS -->
-<!--    <link href="css/bootstrap.min.css" rel="stylesheet">
--->
-    <!-- Custom CSS -->
-  <!--  <link href="css/landing-page.css" rel="stylesheet">
--->
-    <!-- Custom Fonts -->
-  <!--  <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
--->
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-
-    <!--[if lt IE 9]>
-
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">AAbout</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- /.navbar-collapse -->
-        </div>
-
-        <!-- /.container -->
-    </nav>
-
-    <!-- Header -->
-    <div class="intro-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-message">
-                        <h1>Landing Page</h1>
-                        <h3>A Template by Start Bootstrap</h3>
-                        <hr class="intro-divider">
-                        <ul class="list-inline intro-social-buttons">
-			    <?php
-			        echo $this->Html->css(array('bootstrap','bootstrap.min','landing-page'));
-   				echo $this->Form->create('Users', ['action' => 'login', 'method' => 'post']);
-    				echo $this->Form->button('Facebookログイン');
-			    ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-    </div>
-    <!-- /.intro-header -->
-
-    <!-- Page Content -->
-    <div class="content-section-a">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">あなたの想いを伝える最高のマッチングサービス</h2>
-                    <p class="lead">あなたは自分の想いを伝えたい相手を選びlikeボタンを押します。</br>そして相手もあなたを選んだ時あなたの告白ボイスは相手の元に送り届けられます。</br>
-		    また告白ボイスを録音しているため自分や相手の告白ボイスを何回でも聞くことができます。
-		    </a></p>
-                </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-		    <?php echo $this->html->image('1.jpg',array('class' => 'img-responsive','width' >= '900','height' >= '600')); ?>                    
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-    </div>
-    <!-- /.content-section-a -->
-
-    <div class="content-section-b">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">両思いになった時初めて</br>お互いの想いを伝えます！！</h2>
-                    <p class="lead">お互いがlikeボタンを押した時にお互いの告白ボイスが相手の元に届けられます。</br>あなたが何人にlikeボタンを押してもそれは誰にも知られる事がありません。</p>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-		    <?php echo $this->html->image('deai2.jpg',array('class' => 'img-responsive')); ?>                   
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-    </div>
-
-    <!-- /.content-section-b -->
-    <div class="content-section-a">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading"></br>告白ボイスを聞いた後は電話に切り替わります！</h2>
-                    <p class="lead">告白ボイスを聞いた後は相手に電話がつながります。</br>さあ、明日のデートの予定を決めよう！</p>
-                </div>
-
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-		    <?php echo $this->html->image('banner-bg.jpg',array('class' => 'img-responsive')); ?>
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-    </div>
-    <!-- /.content-section-a -->
-
-    <div class="banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2>Connect to Start Bootstrap:</h2>
-                </div>
-                <div class="col-lg-6">
-                    <ul class="list-inline banner-social-buttons">
-                        <li>
-                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
-                        </li>
-
-                        <li>
-                            <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
-                        </li>
+<!-- Header -->
+<div class="intro-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="intro-message">
+                    <h1>Many Heart</h1>
+                    <h3>告白でつながる最高のマッチングサービス</h3>
+                    <ul class="list-inline intro-social-buttons">
+		    <?php
+		        echo $this->Html->css(array('bootstrap','bootstrap.min','landing-page'));
+			echo $this->Form->create('Users', ['action' => 'login', 'method' => 'post']);
+				echo $this->Form->button('Facebookログイン', array('class' => 'btn btn-primary btn-large top-facebook-btn'));
+		    ?>
                     </ul>
                 </div>
             </div>
         </div>
-        <!-- /.container -->
     </div>
-    <!-- /.banner -->
+    <!-- /.container -->
+</div>
+<!-- /.intro-header -->
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
-                        <li>
-                            <a href="#home">Home</a>
-                        </li>
-
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#about">About</a>
-                        </li>
-
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#services">Services</a>
-                        </li>
-
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#contact">Contact</a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted small">Copyright &copy; Your Company 2014. All Rights Reserved</p>
-                </div>
+<!-- Page Content -->
+<div class="content-section-a">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-sm-6">
+                <div class="clearfix"></div>
+                <h2 class="section-heading1">あなたの想いを伝える最高のマッチングサービス</h2>
+                <p class="lead">あなたは自分の想いを伝えたい相手を選び告白ボタンを押します。</br>そして相手もあなたを選んだ時あなたの告白は相手の元に送り届けられます。</br>
+	    また告白を録音しているため自分や相手の告白を何回でも聞くことができます。
+	    </a></p>
+            </div>
+            <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+	    <?php echo $this->html->image('4.jpg',array('class' => 'img-responsive ','width' => '80%')); ?>                    
             </div>
         </div>
-    </footer>
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.content-section-a -->
 
-    <!-- jQuery Version 1.11.0 -->
-    <script src="js/jquery-1.11.0.js"></script>
+<div class="content-section-b">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                <div class="clearfix"></div>
+                <h2 class="section-heading2">両思いになった時初めて</br>お互いの想いを伝えます！！</h2>
+                <p class="lead">お互いが告白ボタンを押した時にお互いの告白が</br>相手の元に届けられます。</br>あなたが何人に告白ボタンを押してもそれは誰にも</br>知られる事がありません。</p>
+            </div>
+            <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+	    <?php echo $this->html->image('deai2.jpg',array('class' => 'img-responsive', 'width' => '100%')); ?>                   
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</div>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+<!-- /.content-section-b -->
+<div class="content-section-a">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-sm-6">
+                <div class="clearfix"></div>
+                <h2 class="section-heading3"></br>告白を聞いた後は電話に切り替わります！</h2>
+                <p class="lead">告白を聞いた後は相手に電話がつながります。</br>さあ、明日のデートの予定を決めよう！</p>
+            </div>
 
-</body>
-</html>
+            <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+	    <?php echo $this->html->image('mozaic_01.jpg',array('class' => 'img-responsive')); ?>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.content-section-a -->
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="copyright text-muted small">Copyright &copy; 100% kosens 2014. All Rights Reserved</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
 

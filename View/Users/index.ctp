@@ -18,6 +18,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
+		<div style="margin-top:10px">
                 <?php
                 echo $this->Form->create();
                 echo $this->Form->text('text1',
@@ -31,6 +32,7 @@
                 echo $this->Form->end();
                 //echo $this->Form->end("送信");
                 ?>			
+		</div>
                 </li>
                 <li><?php echo $this->Html->link('Profile', ['controller' => 'users', 'action' => 'profile']); ?></li>
                 <li><?php echo $this->Html->link('Logout', ['controller' => 'users', 'action' => 'logout']); ?></li>

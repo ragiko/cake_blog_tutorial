@@ -106,6 +106,33 @@ h2 {
     background-color: #E9E9E9 !important;
 }
 
+.section-heading1 {
+    background-color: #F8F8F8 !important;
+}
+
+.section-heading2 {
+    background-color: #FFF !important;
+    width: 400px;
+}
+
+.section-heading3 {
+    background-color: #F8F8F8 !important;
+}
+
+.content-section-b {
+    background-color: #FFF !important;
+}
+
+.intro-message h1 {
+    background-color: rgba(0,0,0,0) !important;
+}
+
+.top-facebook-btn {
+    width: 400px;
+    font-size: 27px !important;
+    margin-top: 100px;
+}
+
 /* PROFILE PAGE */
 .profile-message {
     width: 100%;
